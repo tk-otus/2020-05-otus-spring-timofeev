@@ -5,11 +5,8 @@ import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import ru.otus.hw01.domain.Answer;
 import ru.otus.hw01.domain.QAType;
 import ru.otus.hw01.domain.Question;
-import ru.otus.hw01.service.AnswerService;
-import ru.otus.hw01.service.QuestionServiceImpl;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,7 +18,7 @@ public class QuestionDaoCsvImpl implements QuestionDao {
     private static final Logger logger = LoggerFactory.getLogger(QuestionDaoCsvImpl.class);
     private final List<Question> questions = new ArrayList<>();
 
-    QuestionDaoCsvImpl(Resource file, AnswerService answerService) throws IOException, CsvValidationException {
+    QuestionDaoCsvImpl(Resource file) throws IOException, CsvValidationException {
         try (var csvReader = new CSVReader(new FileReader(file.getFile()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками
 
@@ -30,12 +27,7 @@ public class QuestionDaoCsvImpl implements QuestionDao {
                 int id = Integer.parseInt(values[0]);
                 QAType type = QAType.valueOf(values[1]);
                 String questionText = values[2];
-
-                Question question = new Question(id, type, questionText);
-                for (Answer answer : answerService.getByQuestionId(id)) {
-                    question.addAnswer(answer);
-                }
-                questions.add(question);
+                questions.add(new Question(id, type, questionText));
             }
         }
         logger.info("QUESTIONS {}", questions);

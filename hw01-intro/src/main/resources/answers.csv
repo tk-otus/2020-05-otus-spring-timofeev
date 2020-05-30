@@ -1,3 +1,13 @@
 id,questionId,answer,isCorrect
 1,1,Correct answer,true
 2,1,Incorrect answer,false
+3,2,Yes!,true
+4,2,Yes of course!,true
+5,2,Nope...,false
+6,3,Very cool!,true
+7,3,Very bad...,false
+8,4,Yep!,true
+9,4,Of course,true
+10,4,No,false
+11,5,I'm very sad!,false
+12,5,I'm very happy!,true

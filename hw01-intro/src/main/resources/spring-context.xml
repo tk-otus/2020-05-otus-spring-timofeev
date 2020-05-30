@@ -7,7 +7,6 @@
     </bean>
     <bean id="questionDao" class="ru.otus.hw01.dao.QuestionDaoCsvImpl">
         <constructor-arg value="classpath:questions.csv"/>
-        <constructor-arg ref="answerService"/>
     </bean>
 
     <bean id="answerService" class="ru.otus.hw01.service.AnswerServiceImpl">

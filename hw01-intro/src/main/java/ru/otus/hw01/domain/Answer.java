@@ -2,8 +2,6 @@ package ru.otus.hw01.domain;
 
 import org.springframework.lang.NonNull;
 
-import java.util.Objects;
-
 public class Answer {
     private final int id;
     private final int questionId;
