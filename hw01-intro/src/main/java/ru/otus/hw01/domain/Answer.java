@@ -5,12 +5,24 @@ import org.springframework.lang.NonNull;
 import java.util.Objects;
 
 public class Answer {
+    private final int id;
+    private final int questionId;
     private final String answer;
     private final boolean isCorrect;
 
-    public Answer(@NonNull String answer, @NonNull boolean isCorrect) {
+    public Answer(@NonNull int id, @NonNull int questionId, @NonNull String answer, @NonNull boolean isCorrect) {
+        this.id = id;
+        this.questionId = questionId;
         this.answer = answer;
         this.isCorrect = isCorrect;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getQuestionId() {
+        return questionId;
     }
 
     public String getAnswer() {
@@ -24,7 +36,9 @@ public class Answer {
     @Override
     public String toString() {
         return "Answer{" +
-                "text='" + answer + '\'' +
+                "id=" + id +
+                ", questionId=" + questionId +
+                ", answer='" + answer + '\'' +
                 ", isCorrect=" + isCorrect +
                 '}';
     }
@@ -33,12 +47,14 @@ public class Answer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Answer answer = (Answer) o;
-        return this.answer.equals(answer.answer);
+
+        return id == answer.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answer);
+        return id;
     }
 }

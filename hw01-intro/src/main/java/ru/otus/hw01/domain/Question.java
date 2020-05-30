@@ -7,12 +7,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class Question {
+    private final int id;
     private final QAType type;
     private final String questionText;
     private final List<Answer> answers = new ArrayList<>();
     private final List<Answer> correctAnswers = new ArrayList<>();
 
-    public Question(@NonNull QAType type, @NonNull String questionText) {
+    public Question(@NonNull int id, @NonNull QAType type, @NonNull String questionText) {
+        this.id = id;
         this.type = type;
         this.questionText = questionText;
     }
@@ -44,6 +46,10 @@ public class Question {
                 && correctAnswers.size() == 1);
     }
 
+    public int getId() {
+        return id;
+    }
+
     public List<Answer> getAnswers() {
         return answers;
     }
@@ -63,9 +69,11 @@ public class Question {
     @Override
     public String toString() {
         return "Question{" +
-                "type=" + type +
+                "id=" + id +
+                ", type=" + type +
                 ", questionText='" + questionText + '\'' +
                 ", answers=" + answers +
+                ", correctAnswers=" + correctAnswers +
                 '}';
     }
 }

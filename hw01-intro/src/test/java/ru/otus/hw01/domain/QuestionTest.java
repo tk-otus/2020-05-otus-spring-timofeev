@@ -19,20 +19,24 @@ class QuestionTest {
 
     @BeforeEach
     void initMockAnswers() {
+        when(correct1.getId()).thenReturn(1);
         when(correct1.getAnswer()).thenReturn("First correct");
         when(correct1.isCorrect()).thenReturn(true);
+        when(correct2.getId()).thenReturn(2);
         when(correct2.getAnswer()).thenReturn("Second correct");
         when(correct2.isCorrect()).thenReturn(true);
+        when(incorrect1.getId()).thenReturn(3);
         when(incorrect1.getAnswer()).thenReturn("First incorrect");
         when(incorrect1.isCorrect()).thenReturn(false);
+        when(incorrect2.getId()).thenReturn(4);
         when(incorrect2.getAnswer()).thenReturn("Second incorrect");
         when(incorrect2.isCorrect()).thenReturn(false);
     }
 
     @BeforeEach
     void initQuestions() {
-        oneTypeQuestion = new Question(QAType.ONE, "One Type Question");
-        multiTypeQuestion = new Question(QAType.MULTI, "Multi Type Question");
+        oneTypeQuestion = new Question(1, QAType.ONE, "One Type Question");
+        multiTypeQuestion = new Question(2, QAType.MULTI, "Multi Type Question");
     }
 
     @Test

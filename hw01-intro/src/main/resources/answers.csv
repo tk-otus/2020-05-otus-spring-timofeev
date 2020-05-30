@@ -1,0 +1,3 @@
+id,questionId,answer,isCorrect
+1,1,Correct answer,true
+2,1,Incorrect answer,false
