@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import ru.otus.hw01.domain.Answer;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +19,8 @@ public class AnswerDaoCsvImpl implements AnswerDao {
     private final List<Answer> answers = new ArrayList<>();
 
     AnswerDaoCsvImpl(Resource file) throws IOException, CsvValidationException {
-        try (var csvReader = new CSVReader(new FileReader(file.getFile()))) {
+        try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками
-
             String[] values;
             while ((values = csvReader.readNext()) != null) {
                 int id = Integer.parseInt(values[0]);
@@ -30,7 +29,6 @@ public class AnswerDaoCsvImpl implements AnswerDao {
                 boolean isCorrect = Boolean.parseBoolean(values[3]);
                 answers.add(new Answer(id, questionId, answerText, isCorrect));
             }
-
         }
         logger.info("ANSWERS {}", answers);
     }
