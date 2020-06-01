@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+    <!-- Dao -->
+    <bean id="answerDao" class="ru.otus.hw01.dao.AnswerDaoCsvImpl">
+        <constructor-arg value="classpath:answers.csv"/>
+    </bean>
+    <bean id="questionDao" class="ru.otus.hw01.dao.QuestionDaoCsvImpl">
+        <constructor-arg name="file" value="classpath:questions.csv"/>
+        <constructor-arg name="answerDao" ref="answerDao"/>
+    </bean>
+    <!-- Services -->
+    <bean id="answerService" class="ru.otus.hw01.service.AnswerServiceImpl">
+        <constructor-arg name="dao" ref="answerDao"/>
+    </bean>
+    <bean id="questionService" class="ru.otus.hw01.service.QuestionServiceImpl">
+        <constructor-arg name="dao" ref="questionDao"/>
+    </bean>
+    <bean id="questionPrintService" class="ru.otus.hw01.service.QuestionConsolePrintServiceImpl">
+        <constructor-arg name="out">
+            <util:constant static-field="java.lang.System.out"/>
+        </constructor-arg>
+    </bean>
+</beans>
