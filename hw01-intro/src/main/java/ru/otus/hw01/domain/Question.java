@@ -1,6 +1,7 @@
 package ru.otus.hw01.domain;
 
 import org.springframework.lang.NonNull;
+import ru.otus.hw01.domain.exception.TooManyCorrectAnswersException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +30,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         if (type == QAType.ONE && answer.isCorrect() && correctAnswers.size() == 1) {
-            throw new RuntimeException("Нельзя добавить больше одного правильного ответа");
+            throw new TooManyCorrectAnswersException("You cannot add more than one correct answer");
         }
         if (canAddAnswer(answer)) {
         answers.add(answer);

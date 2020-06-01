@@ -5,8 +5,10 @@ import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import ru.otus.hw01.dao.exception.AnswerLoadingException;
 import ru.otus.hw01.domain.Answer;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class AnswerDaoCsvImpl implements AnswerDao {
     private static final Logger logger = LoggerFactory.getLogger(AnswerDaoCsvImpl.class);
     private final List<Answer> answers = new ArrayList<>();
 
-    AnswerDaoCsvImpl(Resource file) throws IOException, CsvValidationException {
+    AnswerDaoCsvImpl(Resource file) throws AnswerLoadingException {
         try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками
             String[] values;
@@ -29,8 +31,15 @@ public class AnswerDaoCsvImpl implements AnswerDao {
                 boolean isCorrect = Boolean.parseBoolean(values[3]);
                 answers.add(new Answer(id, questionId, answerText, isCorrect));
             }
+        } catch (FileNotFoundException e) {
+            throw new AnswerLoadingException("Answers file (" + file.getFilename() + ") not found", e);
+        } catch (IOException e) {
+            throw new AnswerLoadingException("Failed to read answers file (" + file.getFilename() + ")", e);
+        } catch (CsvValidationException e) {
+            throw new AnswerLoadingException("An error occurred while reading the answers file (" + file.getFilename() + ")", e);
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+            throw new AnswerLoadingException("Answers file contains invalid data (" + file.getFilename() + ")", e);
         }
-        logger.info("ANSWERS {}", answers);
     }
 
     @Override
