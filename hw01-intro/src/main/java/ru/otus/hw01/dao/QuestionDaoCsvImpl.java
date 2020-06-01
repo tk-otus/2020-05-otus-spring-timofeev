@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import ru.otus.hw01.dao.exception.QuestionLoadingException;
+import ru.otus.hw01.domain.Answer;
 import ru.otus.hw01.domain.QAType;
 import ru.otus.hw01.domain.Question;
 
@@ -20,7 +21,7 @@ public class QuestionDaoCsvImpl implements QuestionDao {
     private static final Logger logger = LoggerFactory.getLogger(QuestionDaoCsvImpl.class);
     private final List<Question> questions = new ArrayList<>();
 
-    QuestionDaoCsvImpl(Resource file) throws QuestionLoadingException {
+    QuestionDaoCsvImpl(Resource file, AnswerDao answerDao) throws QuestionLoadingException {
         try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками
             String[] values;
@@ -38,6 +39,12 @@ public class QuestionDaoCsvImpl implements QuestionDao {
             throw new QuestionLoadingException("An error occurred while reading the questions file (" + file.getFilename() + ")", e);
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             throw new QuestionLoadingException("Questions file contains invalid data (" + file.getFilename() + ")", e);
+        }
+
+        for (Question question : questions) {
+            for (Answer answer : answerDao.getByQuestionId(question.getId())) {
+                question.addAnswer(answer);
+            }
         }
     }
 

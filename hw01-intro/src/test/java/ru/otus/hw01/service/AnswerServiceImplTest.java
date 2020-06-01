@@ -2,21 +2,31 @@ package ru.otus.hw01.service;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.otus.hw01.dao.AnswerDao;
+import ru.otus.hw01.dao.AnswerDaoCsvImpl;
 import ru.otus.hw01.domain.Answer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class AnswerServiceImplTest {
     private static AnswerService answerService;
+    private static Answer correctAnswer;
 
     @BeforeAll
     static void setUp() {
-        final var context = new ClassPathXmlApplicationContext("/spring-context.xml");
-        answerService = context.getBean(AnswerService.class);
+        correctAnswer = mock(Answer.class);
+        AnswerDao dao = mock(AnswerDaoCsvImpl.class);
+        when(dao.getById(1)).thenReturn(Optional.ofNullable(correctAnswer));
+        when(dao.getByQuestionId(1)).thenReturn(Collections.singletonList(correctAnswer));
+        when(dao.getAll()).thenReturn(Collections.singletonList(correctAnswer));
+
+        answerService = new AnswerServiceImpl(dao);
     }
 
     @Test
@@ -24,6 +34,7 @@ class AnswerServiceImplTest {
         Optional<Answer> answer = answerService.getById(1);
 
         assertTrue(answer.isPresent());
+        assertEquals(correctAnswer, answer.get());
     }
 
     @Test
@@ -31,7 +42,7 @@ class AnswerServiceImplTest {
         List<Answer> answers = answerService.getByQuestionId(1);
 
         assertNotNull(answers);
-        assertEquals(2, answers.size());
+        assertEquals(correctAnswer, answers.get(0));
     }
 
     @Test
@@ -39,6 +50,6 @@ class AnswerServiceImplTest {
         List<Answer> answers = answerService.getAll();
 
         assertNotNull(answers);
-        assertEquals(12, answers.size());
+        assertEquals(correctAnswer, answers.get(0));
     }
 }
