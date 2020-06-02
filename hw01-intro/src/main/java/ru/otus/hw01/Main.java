@@ -11,5 +11,7 @@ public class Main {
         var printService = context.getBean(QuestionConsolePrintService.class);
 
         printService.print(questionService.getAll());
+
+        context.close();
     }
 }
