@@ -12,6 +12,7 @@
 
     <modules>
         <module>hw01-intro</module>
+        <module>hw02-annotation-based</module>
     </modules>
 
 </project>
