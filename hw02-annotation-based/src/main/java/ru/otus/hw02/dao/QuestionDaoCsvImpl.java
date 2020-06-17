@@ -23,10 +23,29 @@ import java.util.Optional;
 @Repository
 public class QuestionDaoCsvImpl implements QuestionDao {
     private static final Logger logger = LoggerFactory.getLogger(QuestionDaoCsvImpl.class);
-    private final List<Question> questions = new ArrayList<>();
+    private final Resource file;
+    private final AnswerDao dao;
+    private final List<Question> questions;
 
     @Autowired
-    public QuestionDaoCsvImpl(@Value("classpath:questions.csv") Resource file, AnswerDao answerDao) throws QuestionLoadingException {
+    public QuestionDaoCsvImpl(@Value("classpath:questions.csv") Resource file, AnswerDao dao) throws QuestionLoadingException {
+        this.file = file;
+        this.dao = dao;
+        questions = readQuestionFromFile();
+    }
+
+    @Override
+    public Optional<Question> getById(int id) {
+        return questions.stream().filter(it -> it.getId() == id).findFirst();
+    }
+
+    @Override
+    public List<Question> getAll() {
+        return questions;
+    }
+
+    private List<Question> readQuestionFromFile() throws QuestionLoadingException {
+        List<Question> result = new ArrayList<>();
         try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками
             String[] values;
@@ -34,7 +53,7 @@ public class QuestionDaoCsvImpl implements QuestionDao {
                 int id = Integer.parseInt(values[0]);
                 QAType type = QAType.valueOf(values[1]);
                 String questionText = values[2];
-                questions.add(new Question(id, type, questionText));
+                result.add(new Question(id, type, questionText));
             }
         } catch (FileNotFoundException e) {
             throw new QuestionLoadingException("Questions file (" + file.getFilename() + ") not found", e);
@@ -45,21 +64,15 @@ public class QuestionDaoCsvImpl implements QuestionDao {
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
             throw new QuestionLoadingException("Questions file contains invalid data (" + file.getFilename() + ")", e);
         }
+        return readAnswersFromDao(result);
+    }
 
+    private List<Question> readAnswersFromDao (List<Question> questions) throws QuestionLoadingException {
         for (Question question : questions) {
-            for (Answer answer : answerDao.getByQuestionId(question.getId())) {
+            for (Answer answer : dao.getByQuestionId(question.getId())) {
                 question.addAnswer(answer);
             }
         }
-    }
-
-    @Override
-    public Optional<Question> getById(int id) {
-        return questions.stream().filter(it -> it.getId() == id).findFirst();
-    }
-
-    @Override
-    public List<Question> getAll() {
         return questions;
     }
 }

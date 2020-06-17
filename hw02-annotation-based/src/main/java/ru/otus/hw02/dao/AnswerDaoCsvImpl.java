@@ -21,28 +21,12 @@ import java.util.stream.Collectors;
 @Repository
 public class AnswerDaoCsvImpl implements AnswerDao {
     private static final Logger logger = LoggerFactory.getLogger(AnswerDaoCsvImpl.class);
-    private final List<Answer> answers = new ArrayList<>();
+    private final Resource file;
+    private final List<Answer> answers;
 
     public AnswerDaoCsvImpl(@Value("classpath:answers.csv") Resource file) throws AnswerLoadingException {
-        try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
-            csvReader.readNext(); // Пропускаем строку с заголовками
-            String[] values;
-            while ((values = csvReader.readNext()) != null) {
-                int id = Integer.parseInt(values[0]);
-                int questionId = Integer.parseInt(values[1]);
-                String answerText = values[2];
-                boolean isCorrect = Boolean.parseBoolean(values[3]);
-                answers.add(new Answer(id, questionId, answerText, isCorrect));
-            }
-        } catch (FileNotFoundException e) {
-            throw new AnswerLoadingException("Answers file (" + file.getFilename() + ") not found", e);
-        } catch (IOException e) {
-            throw new AnswerLoadingException("Failed to read answers file (" + file.getFilename() + ")", e);
-        } catch (CsvValidationException e) {
-            throw new AnswerLoadingException("An error occurred while reading the answers file (" + file.getFilename() + ")", e);
-        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-            throw new AnswerLoadingException("Answers file contains invalid data (" + file.getFilename() + ")", e);
-        }
+        this.file = file;
+        answers = readAnswersFromFile();
     }
 
     @Override
@@ -58,5 +42,29 @@ public class AnswerDaoCsvImpl implements AnswerDao {
     @Override
     public List<Answer> getAll() {
         return answers;
+    }
+
+    private List<Answer> readAnswersFromFile() throws AnswerLoadingException {
+        var result = new ArrayList<Answer>();
+        try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
+            csvReader.readNext(); // Пропускаем строку с заголовками
+            String[] values;
+            while ((values = csvReader.readNext()) != null) {
+                int id = Integer.parseInt(values[0]);
+                int questionId = Integer.parseInt(values[1]);
+                String answerText = values[2];
+                boolean isCorrect = Boolean.parseBoolean(values[3]);
+                result.add(new Answer(id, questionId, answerText, isCorrect));
+            }
+        } catch (FileNotFoundException e) {
+            throw new AnswerLoadingException("Answers file (" + file.getFilename() + ") not found", e);
+        } catch (IOException e) {
+            throw new AnswerLoadingException("Failed to read answers file (" + file.getFilename() + ")", e);
+        } catch (CsvValidationException e) {
+            throw new AnswerLoadingException("An error occurred while reading the answers file (" + file.getFilename() + ")", e);
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+            throw new AnswerLoadingException("Answers file contains invalid data (" + file.getFilename() + ")", e);
+        }
+        return result;
     }
 }
