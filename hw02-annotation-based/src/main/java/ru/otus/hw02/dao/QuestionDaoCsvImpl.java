@@ -4,7 +4,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Repository;
 import ru.otus.hw02.dao.exception.QuestionLoadingException;
 import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.QAType;
@@ -17,11 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class QuestionDaoCsvImpl implements QuestionDao {
     private static final Logger logger = LoggerFactory.getLogger(QuestionDaoCsvImpl.class);
     private final List<Question> questions = new ArrayList<>();
 
-    public QuestionDaoCsvImpl(Resource file, AnswerDao answerDao) throws QuestionLoadingException {
+    @Autowired
+    public QuestionDaoCsvImpl(@Value("classpath:questions.csv") Resource file, AnswerDao answerDao) throws QuestionLoadingException {
         try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками
             String[] values;

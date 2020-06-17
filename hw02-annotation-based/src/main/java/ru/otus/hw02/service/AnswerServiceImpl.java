@@ -1,14 +1,18 @@
 package ru.otus.hw02.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.otus.hw02.dao.AnswerDao;
 import ru.otus.hw02.domain.Answer;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerDao dao;
 
+    @Autowired
     public AnswerServiceImpl(AnswerDao dao) {
         this.dao = dao;
     }

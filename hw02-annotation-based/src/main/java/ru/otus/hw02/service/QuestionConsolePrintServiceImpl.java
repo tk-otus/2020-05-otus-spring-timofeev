@@ -1,18 +1,15 @@
 package ru.otus.hw02.service;
 
+import org.springframework.stereotype.Service;
 import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.Question;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
+@Service
 public class QuestionConsolePrintServiceImpl implements QuestionConsolePrintService {
-    private final PrintStream out;
-
-    public QuestionConsolePrintServiceImpl(OutputStream out) {
-        this.out = new PrintStream(out);
-    }
+    private PrintStream out = new PrintStream(System.out);
 
     @Override
     public void print(Question question) {
@@ -26,5 +23,9 @@ public class QuestionConsolePrintServiceImpl implements QuestionConsolePrintServ
     @Override
     public void print(List<Question> questions) {
         questions.forEach(this::print);
+    }
+
+    public void setOut(PrintStream out) {
+        this.out = new PrintStream(out);
     }
 }
