@@ -1,12 +1,12 @@
-package ru.otus.hw01.dao;
+package ru.otus.hw02.dao;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import ru.otus.hw01.dao.exception.AnswerLoadingException;
-import ru.otus.hw01.domain.Answer;
+import ru.otus.hw02.dao.exception.AnswerLoadingException;
+import ru.otus.hw02.domain.Answer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class AnswerDaoCsvImpl implements AnswerDao {
     private static final Logger logger = LoggerFactory.getLogger(AnswerDaoCsvImpl.class);
     private final List<Answer> answers = new ArrayList<>();
 
-    AnswerDaoCsvImpl(Resource file) throws AnswerLoadingException {
+    public AnswerDaoCsvImpl(Resource file) throws AnswerLoadingException {
         try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками
             String[] values;

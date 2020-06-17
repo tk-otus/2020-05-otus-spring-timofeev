@@ -1,7 +1,7 @@
-package ru.otus.hw01.domain;
+package ru.otus.hw02.domain;
 
 import org.springframework.lang.NonNull;
-import ru.otus.hw01.domain.exception.TooManyCorrectAnswersException;
+import ru.otus.hw02.domain.exception.TooManyCorrectAnswersException;
 
 import java.util.ArrayList;
 import java.util.Collections;

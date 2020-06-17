@@ -1,4 +1,4 @@
-package ru.otus.hw01.dao.exception;
+package ru.otus.hw02.dao.exception;
 
 import java.io.IOException;
 

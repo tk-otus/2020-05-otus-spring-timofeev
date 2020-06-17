@@ -1,7 +1,7 @@
-package ru.otus.hw01.service;
+package ru.otus.hw02.service;
 
-import ru.otus.hw01.dao.AnswerDao;
-import ru.otus.hw01.domain.Answer;
+import ru.otus.hw02.dao.AnswerDao;
+import ru.otus.hw02.domain.Answer;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import java.util.Optional;
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerDao dao;
 
-    AnswerServiceImpl(AnswerDao dao) {
+    public AnswerServiceImpl(AnswerDao dao) {
         this.dao = dao;
     }
 

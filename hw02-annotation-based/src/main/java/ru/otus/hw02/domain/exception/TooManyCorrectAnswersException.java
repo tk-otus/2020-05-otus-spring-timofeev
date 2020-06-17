@@ -1,4 +1,4 @@
-package ru.otus.hw01.domain.exception;
+package ru.otus.hw02.domain.exception;
 
 public class TooManyCorrectAnswersException extends RuntimeException {
     public TooManyCorrectAnswersException(String message) {

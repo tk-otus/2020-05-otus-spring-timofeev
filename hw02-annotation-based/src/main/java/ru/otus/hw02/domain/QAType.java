@@ -1,4 +1,4 @@
-package ru.otus.hw01.domain;
+package ru.otus.hw02.domain;
 
 public enum QAType {
     ONE,

@@ -1,6 +1,6 @@
-package ru.otus.hw01.service;
+package ru.otus.hw02.service;
 
-import ru.otus.hw01.domain.Answer;
+import ru.otus.hw02.domain.Answer;
 
 import java.util.List;
 import java.util.Optional;

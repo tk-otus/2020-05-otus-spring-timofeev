@@ -1,10 +1,10 @@
-package ru.otus.hw01.service;
+package ru.otus.hw02.service;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.otus.hw01.dao.AnswerDao;
-import ru.otus.hw01.dao.AnswerDaoCsvImpl;
-import ru.otus.hw01.domain.Answer;
+import ru.otus.hw02.dao.AnswerDao;
+import ru.otus.hw02.dao.AnswerDaoCsvImpl;
+import ru.otus.hw02.domain.Answer;
 
 import java.util.Collections;
 import java.util.List;

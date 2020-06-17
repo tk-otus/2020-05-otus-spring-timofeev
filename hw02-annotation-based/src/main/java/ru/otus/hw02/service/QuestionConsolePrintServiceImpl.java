@@ -1,7 +1,7 @@
-package ru.otus.hw01.service;
+package ru.otus.hw02.service;
 
-import ru.otus.hw01.domain.Answer;
-import ru.otus.hw01.domain.Question;
+import ru.otus.hw02.domain.Answer;
+import ru.otus.hw02.domain.Question;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
