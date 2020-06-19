@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.util.List;
 
 @Service
-public class QuestionConsolePrintServiceImpl implements QuestionConsolePrintService {
+public class ConsolePrintServiceImpl implements ConsolePrintService {
     private PrintStream out = new PrintStream(System.out);
 
     @Override

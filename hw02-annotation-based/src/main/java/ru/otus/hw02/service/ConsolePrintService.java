@@ -5,7 +5,7 @@ import ru.otus.hw02.domain.Question;
 import java.io.PrintStream;
 import java.util.List;
 
-public interface QuestionConsolePrintService {
+public interface ConsolePrintService {
 
     void print(Question question);
 
