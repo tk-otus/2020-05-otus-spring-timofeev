@@ -1,25 +1,32 @@
 package ru.otus.hw02.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.otus.hw02.domain.Answer;
-import ru.otus.hw02.domain.Question;
 
 import java.io.*;
-import java.util.List;
+import java.util.Scanner;
 
 @Service
 public class ConsolePrintServiceImpl implements ConsolePrintService {
-    private PrintStream out = new PrintStream(System.out);
-    private InputStreamReader in = new InputStreamReader(System.in);
+    private PrintStream out;
+    private Scanner sc;
+
+    @Autowired
+    ConsolePrintServiceImpl(@Value("#{ T(java.lang.System).out}") PrintStream out,
+                            @Value("#{ T(java.lang.System).in}") InputStream in) {
+        this.out = out;
+        this.sc = new Scanner(in);
+    }
 
     @Override
     public void setOut(PrintStream out) {
-        this.out = new PrintStream(out);
+        this.out = out;
     }
 
     @Override
     public void setIn(InputStream in) {
-        this.in = new InputStreamReader(in);
+        this.sc = new Scanner(in);
     }
 
     @Override
@@ -27,8 +34,7 @@ public class ConsolePrintServiceImpl implements ConsolePrintService {
         out.println(string);
     }
 
-    public String read() throws IOException {
-        BufferedReader reader = new BufferedReader(in);
-        return reader.readLine();
+    public String read() {
+        return sc.nextLine();
     }
 }
