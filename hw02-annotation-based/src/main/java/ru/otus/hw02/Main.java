@@ -2,10 +2,7 @@ package ru.otus.hw02;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import ru.otus.hw02.service.AcquaintanceService;
-import ru.otus.hw02.service.ConsolePrintService;
-import ru.otus.hw02.service.QuestionService;
-import ru.otus.hw02.service.WelcomeService;
+import ru.otus.hw02.service.*;
 
 @ComponentScan
 public class Main {
@@ -15,10 +12,11 @@ public class Main {
         var printService = context.getBean(ConsolePrintService.class);
         var welcomeService = context.getBean(WelcomeService.class);
         var acquaintanceService = context.getBean(AcquaintanceService.class);
+        var testingService = context.getBean(TestingService.class);
 
         printService.print(welcomeService.getWelcomeMessage());
         acquaintanceService.run();
-        printService.print(questionService.getAll());
+        testingService.run();
         context.close();
     }
 }

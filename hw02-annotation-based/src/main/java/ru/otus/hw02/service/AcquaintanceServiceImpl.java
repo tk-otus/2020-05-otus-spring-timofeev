@@ -23,15 +23,14 @@ public class AcquaintanceServiceImpl implements AcquaintanceService {
     @Override
     public void run() {
         try {
-            printService.print("Your first name?");
+            printService.print("Enter your first name:");
             firstName = printService.read();
-            printService.print("Your last name?");
+            printService.print("Enter your last name:");
             lastName = printService.read();
+            printService.print(String.format("Hello, %s %s!", firstName, lastName));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.debug("First Name: {}", firstName);
-        logger.debug("Last Name: {}", lastName);
     }
 
     public String getFirstName() {
