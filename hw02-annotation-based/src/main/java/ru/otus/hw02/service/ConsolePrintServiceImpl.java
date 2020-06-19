@@ -31,19 +31,4 @@ public class ConsolePrintServiceImpl implements ConsolePrintService {
         BufferedReader reader = new BufferedReader(in);
         return reader.readLine();
     }
-
-    @Override
-    public void print(Question question) {
-        out.println("Question: " + question.getQuestionText() + " (type: " + question.getType() + ")");
-        for (Answer answer : question.getAnswers()) {
-            out.println(" - " + answer.getAnswer() + " (is correct: " + answer.isCorrect() + ")");
-        }
-        out.println("");
-    }
-
-    @Override
-    public void print(List<Question> questions) {
-        questions.forEach(this::print);
-    }
-
 }

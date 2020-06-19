@@ -17,7 +17,4 @@ public interface ConsolePrintService {
 
     public String read() throws IOException;
 
-    void print(Question question);
-
-    void print(List<Question> questions);
 }
