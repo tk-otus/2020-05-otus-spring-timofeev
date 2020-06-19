@@ -11,5 +11,7 @@ public interface QuestionConsolePrintService {
 
     void print(List<Question> questions);
 
+    void print(String string);
+
     void setOut(PrintStream out);
 }

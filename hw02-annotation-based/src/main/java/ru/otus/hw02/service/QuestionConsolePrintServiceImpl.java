@@ -25,6 +25,11 @@ public class QuestionConsolePrintServiceImpl implements QuestionConsolePrintServ
         questions.forEach(this::print);
     }
 
+    @Override
+    public void print(String string) {
+        out.println(string);
+    }
+
     public void setOut(PrintStream out) {
         this.out = new PrintStream(out);
     }
