@@ -11,55 +11,56 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TestingServiceImpl implements TestingService {
     private static final Logger logger = LoggerFactory.getLogger(TestingServiceImpl.class);
 
-    private final QuestionService questionService;
     private final ConsolePrintService printService;
     private final List<Question> questions;
-    private List<Question> correctAnsweredQuestions = new ArrayList<>();
-    private List<Question> incorrectAnsweredQuestions = new ArrayList<>();
+    private final List<Question> correctAnsweredQuestions = new ArrayList<>();
+    private final List<Question> incorrectAnsweredQuestions = new ArrayList<>();
     private Question currentQuestion;
     private List<Answer> currentAnswers;
-    private int currentQuestionIndex = 0;
+    private int currentQuestionIndex = -1;
 
     @Autowired
     TestingServiceImpl(QuestionService questionService, ConsolePrintService printService) {
-        this.questionService = questionService;
         this.printService = printService;
         questions = questionService.getAll();
         Collections.shuffle(questions);
     }
 
     @Override
-    public Question getCurrentQuestion() {
-        return currentQuestion;
+    public Optional<Question> getCurrentQuestion() {
+        return Optional.of(currentQuestion);
     }
 
     @Override
-    public Question getNextQuestion() {
+    public Optional<Question> getNextQuestion() {
         currentQuestionIndex += 1;
-        if (currentQuestionIndex <= questions.size()) {
-            currentQuestion = questions.get(currentQuestionIndex - 1);
-            return currentQuestion;
+        if (currentQuestionIndex < questions.size()) {
+            currentQuestion = questions.get(currentQuestionIndex);
+            return Optional.of(currentQuestion);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public List<Answer> getAnswers() {
         if (currentQuestion == null)
-            return null;
+            return new ArrayList<>();
         currentAnswers = currentQuestion.getAnswers();
         Collections.shuffle(currentAnswers);
         return currentAnswers;
     }
 
     @Override
-    public String getTextResult() {
-        return String.format(
+    public void printResults() {
+        printService.print("Thank you for your answers!");
+        printService.print("Results:");
+        printService.print(String.format(
                 "=============================\n" +
                         "Correct answers: %s\n" +
                         "Incorrect answers: %s\n" +
@@ -67,13 +68,14 @@ public class TestingServiceImpl implements TestingService {
                 correctAnsweredQuestions.size(),
                 incorrectAnsweredQuestions.size(),
                 questions.size()
-        );
+        ));
     }
 
     @Override
     public void run() {
-        Question question = getNextQuestion();
-        while (question != null) {
+        Optional<Question> questionObj = getNextQuestion();
+        while (questionObj.isPresent()) {
+            Question question = questionObj.get();
             try {
                 printService.print("Question: " + question.getQuestionText() + " (type: " + question.getType() + ")");
                 int id = 1;
@@ -90,18 +92,22 @@ public class TestingServiceImpl implements TestingService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            question = getNextQuestion();
+            questionObj = getNextQuestion();
         }
-
-        printService.print("Thank you for your answers!");
-        printService.print("Results:");
-        printService.print(getTextResult());
+        printResults();
     }
 
-    private boolean checkCorrectAnswers(String userAnswers) {
+    private boolean checkCorrectAnswers(String userInput) {
         List<Answer> answers = new ArrayList<>();
-        for (String id : userAnswers.split(",")) {
-            Answer answer = currentAnswers.get(Integer.parseInt(id) - 1);
+        for (String userAnswer : userInput.split(",")) {
+            userAnswer = userAnswer.trim();
+            Answer answer = null;
+            try {
+                int id = Integer.parseInt(userAnswer) - 1;
+                answer = currentAnswers.get(id);
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                logger.warn("Can't find answer with id {}", userAnswer);
+            }
             if (answer == null)
                 return false;
             answers.add(answer);

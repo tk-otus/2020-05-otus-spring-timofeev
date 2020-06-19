@@ -4,14 +4,15 @@ import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.Question;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TestingService extends Runnable {
 
-    public Question getCurrentQuestion();
+    public Optional<Question> getCurrentQuestion();
 
-    public Question getNextQuestion();
+    public Optional<Question> getNextQuestion();
 
     public List<Answer> getAnswers();
 
-    public String getTextResult();
+    public void printResults();
 }
