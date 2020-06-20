@@ -43,6 +43,10 @@ public class TestingServiceImpl implements TestingService {
         currentQuestionIndex += 1;
         if (currentQuestionIndex < questions.size()) {
             currentQuestion = questions.get(currentQuestionIndex);
+
+            currentAnswers = currentQuestion.getAnswers();
+            Collections.shuffle(currentAnswers);
+
             return Optional.of(currentQuestion);
         }
         return Optional.empty();
@@ -50,11 +54,7 @@ public class TestingServiceImpl implements TestingService {
 
     @Override
     public List<Answer> getAnswers() {
-        if (currentQuestion == null)
-            return new ArrayList<>();
-        currentAnswers = currentQuestion.getAnswers();
-        Collections.shuffle(currentAnswers);
-        return currentAnswers;
+        return currentQuestion != null ? currentAnswers : new ArrayList<>();
     }
 
     @Override
@@ -98,16 +98,26 @@ public class TestingServiceImpl implements TestingService {
         printResults();
     }
 
+    public List<Question> getCorrectAnsweredQuestions() {
+        return correctAnsweredQuestions;
+    }
+
+    public List<Question> getIncorrectAnsweredQuestions() {
+        return incorrectAnsweredQuestions;
+    }
+
+    @Override
     public boolean checkCorrectAnswers(String userInput) {
         List<Answer> answers = new ArrayList<>();
         for (String userAnswer : userInput.split(",")) {
             userAnswer = userAnswer.trim();
-            Answer answer = null;
+            Answer answer;
             try {
                 int id = Integer.parseInt(userAnswer) - 1;
                 answer = currentAnswers.get(id);
             } catch (NumberFormatException | IndexOutOfBoundsException e) {
                 logger.warn("Can't find answer with id {}", userAnswer);
+                return false;
             }
             if (answer == null)
                 return false;

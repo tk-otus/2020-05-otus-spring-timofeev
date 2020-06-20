@@ -15,4 +15,6 @@ public interface TestingService extends Runnable {
     public List<Answer> getAnswers();
 
     public void printResults();
+
+    public boolean checkCorrectAnswers(String userInput);
 }
