@@ -16,7 +16,7 @@ public class WelcomeDaoFileImpl implements WelcomeDao {
     private final Resource file;
     private final String welcomeMessage;
 
-    WelcomeDaoFileImpl(@Value("classpath:welcomeMessage.txt") Resource file) throws WelcomeMessageLoadingException {
+    WelcomeDaoFileImpl(@Value("classpath:${global.welcome.message.file}") Resource file) throws WelcomeMessageLoadingException {
         this.file = file;
         this.welcomeMessage = readWelcomeFromFile();
     }
@@ -26,7 +26,6 @@ public class WelcomeDaoFileImpl implements WelcomeDao {
         try (var fileReader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line = null;
             while ((line = fileReader.readLine()) != null) {
-                logger.debug("LINE: {}", line);
                 result.append(line);
                 result.append(System.getProperty("line.separator"));
             }

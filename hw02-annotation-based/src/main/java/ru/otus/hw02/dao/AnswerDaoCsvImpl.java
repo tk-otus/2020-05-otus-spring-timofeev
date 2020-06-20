@@ -24,7 +24,7 @@ public class AnswerDaoCsvImpl implements AnswerDao {
     private final Resource file;
     private final List<Answer> answers;
 
-    public AnswerDaoCsvImpl(@Value("classpath:answers.csv") Resource file) throws AnswerLoadingException {
+    public AnswerDaoCsvImpl(@Value("classpath:${global.answers.csv.file}") Resource file) throws AnswerLoadingException {
         this.file = file;
         answers = readAnswersFromFile();
     }

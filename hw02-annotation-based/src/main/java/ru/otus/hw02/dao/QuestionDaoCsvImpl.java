@@ -28,7 +28,7 @@ public class QuestionDaoCsvImpl implements QuestionDao {
     private final List<Question> questions;
 
     @Autowired
-    public QuestionDaoCsvImpl(@Value("classpath:questions.csv") Resource file, AnswerDao dao) throws QuestionLoadingException {
+    public QuestionDaoCsvImpl(@Value("classpath:${global.questions.csv.file}") Resource file, AnswerDao dao) throws QuestionLoadingException {
         this.file = file;
         this.dao = dao;
         questions = readQuestionFromFile();

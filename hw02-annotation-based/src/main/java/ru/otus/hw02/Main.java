@@ -2,12 +2,13 @@ package ru.otus.hw02;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.annotation.PropertySource;
 import ru.otus.hw02.service.console.ConsolePrintService;
 import ru.otus.hw02.service.testing.TestingService;
 import ru.otus.hw02.service.user.AcquaintanceService;
 import ru.otus.hw02.service.user.WelcomeService;
 
+@PropertySource("classpath:app.properties")
 @ComponentScan
 public class Main {
     public static void main(String[] args) {
@@ -22,9 +23,5 @@ public class Main {
         testingService.run();
 
         context.close();
-    }
-
-    public static PropertySourcesPlaceholderConfigurer propertyConfig() {
-        return new PropertySourcesPlaceholderConfigurer();
     }
 }
