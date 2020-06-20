@@ -10,7 +10,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тест QuestionTest")
+@DisplayName("Класс QuestionTest")
 class QuestionTest {
     private final Answer correct1 = mock(Answer.class);
     private final Answer correct2 = mock(Answer.class);

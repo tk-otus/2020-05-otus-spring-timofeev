@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@DisplayName("Тест WelcomeServiceImplTest")
+@DisplayName("Сервис WelcomeServiceImplTest")
 class WelcomeServiceImplTest {
     private static final String WELCOME_LOGO = "WELCOME LOGO";
     private static WelcomeService welcomeService;

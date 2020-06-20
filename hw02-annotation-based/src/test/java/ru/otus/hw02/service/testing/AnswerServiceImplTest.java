@@ -1,12 +1,11 @@
 package ru.otus.hw02.service.testing;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.hw02.dao.AnswerDao;
 import ru.otus.hw02.dao.AnswerDaoCsvImpl;
 import ru.otus.hw02.domain.Answer;
-import ru.otus.hw02.service.testing.AnswerService;
-import ru.otus.hw02.service.testing.AnswerServiceImpl;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Сервис AnswerServiceImplTest")
 class AnswerServiceImplTest {
     private static AnswerService answerService;
     private static Answer correctAnswer;
@@ -32,6 +32,7 @@ class AnswerServiceImplTest {
     }
 
     @Test
+    @DisplayName("Может получить ответ из dao по Id")
     void testGetById() {
         Optional<Answer> answer = answerService.getById(1);
 
@@ -40,6 +41,7 @@ class AnswerServiceImplTest {
     }
 
     @Test
+    @DisplayName("Может получить ответ из dao по Id вопроса")
     void testGetByQuestionId() {
         List<Answer> answers = answerService.getByQuestionId(1);
 
@@ -48,6 +50,7 @@ class AnswerServiceImplTest {
     }
 
     @Test
+    @DisplayName("Может получить все отвеы из dao")
     void testGetAll() {
         List<Answer> answers = answerService.getAll();
 

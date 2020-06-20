@@ -12,7 +12,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 
-@DisplayName("Тест AcquaintanceServiceImplTest")
+@DisplayName("Сервис AcquaintanceServiceImplTest")
 class AcquaintanceServiceImplTest {
     ConsolePrintService printService;
     AcquaintanceService acquaintanceService;
@@ -24,7 +24,7 @@ class AcquaintanceServiceImplTest {
     }
 
     @Test
-    @DisplayName("Сервис может считать имя и фамилию пользователя")
+    @DisplayName("Может считать имя и фамилию пользователя")
     void testCanReadUserData() throws IOException {
         String firstName = "Ivan";
         String lastName = "Ivanov";
