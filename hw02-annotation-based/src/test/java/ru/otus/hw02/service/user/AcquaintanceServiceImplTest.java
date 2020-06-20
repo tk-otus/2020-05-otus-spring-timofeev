@@ -1,7 +1,9 @@
-package ru.otus.hw02.service;
+package ru.otus.hw02.service.user;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw02.service.console.ConsolePrintService;
@@ -14,20 +16,19 @@ import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+@DisplayName("Тест AcquaintanceServiceImplTest")
 @SpringBootTest(classes = AcquaintanceServiceImpl.class)
 class AcquaintanceServiceImplTest {
-    AcquaintanceService acquaintanceService;
 
     @MockBean
     ConsolePrintService printService;
 
-    @BeforeEach
-    void setUp() {
-        acquaintanceService = new AcquaintanceServiceImpl(printService);
-    }
+    @Autowired
+    AcquaintanceService acquaintanceService;
 
     @Test
-    void testWhatUser() throws IOException {
+    @DisplayName("Сервис может считать имя и фамилию пользователя")
+    void testCanReadUserData() throws IOException {
         String firstName = "Ivan";
         String lastName = "Ivanov";
         given(printService.read()).willReturn(firstName).willReturn(lastName);

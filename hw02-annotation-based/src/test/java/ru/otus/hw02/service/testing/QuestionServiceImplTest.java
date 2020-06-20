@@ -1,4 +1,4 @@
-package ru.otus.hw02.service;
+package ru.otus.hw02.service.testing;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
