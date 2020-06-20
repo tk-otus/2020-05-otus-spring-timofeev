@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import ru.otus.hw02.dao.WelcomeDao;
 import ru.otus.hw02.dao.WelcomeDaoFileImpl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Тест WelcomeServiceImplTest")
 class WelcomeServiceImplTest {
@@ -25,6 +25,6 @@ class WelcomeServiceImplTest {
     @Test
     @DisplayName("Может вернуть лого из файла")
     void testGetWelcomeMessage() {
-        assertThat(welcomeService.getWelcomeMessage()).isEqualTo(WELCOME_LOGO);
+        assertEquals(WELCOME_LOGO, welcomeService.getWelcomeMessage());
     }
 }

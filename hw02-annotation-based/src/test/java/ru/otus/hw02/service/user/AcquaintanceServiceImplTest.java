@@ -3,28 +3,25 @@ package ru.otus.hw02.service.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw02.service.console.ConsolePrintService;
-import ru.otus.hw02.service.user.AcquaintanceService;
-import ru.otus.hw02.service.user.AcquaintanceServiceImpl;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 
 @DisplayName("Тест AcquaintanceServiceImplTest")
-@SpringBootTest(classes = AcquaintanceServiceImpl.class)
 class AcquaintanceServiceImplTest {
-
-    @MockBean
     ConsolePrintService printService;
-
-    @Autowired
     AcquaintanceService acquaintanceService;
+
+    @BeforeEach
+    void setUp() {
+        printService = mock(ConsolePrintService.class);
+        acquaintanceService = new AcquaintanceServiceImpl(printService);
+    }
 
     @Test
     @DisplayName("Сервис может считать имя и фамилию пользователя")
@@ -35,7 +32,7 @@ class AcquaintanceServiceImplTest {
 
         acquaintanceService.run();
 
-        assertThat(acquaintanceService.getFirstName()).isEqualTo(firstName);
-        assertThat(acquaintanceService.getLastName()).isEqualTo(lastName);
+        assertEquals(firstName, acquaintanceService.getFirstName());
+        assertEquals(lastName, acquaintanceService.getLastName());
     }
 }
