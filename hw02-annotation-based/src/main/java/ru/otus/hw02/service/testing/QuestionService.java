@@ -1,4 +1,4 @@
-package ru.otus.hw02.service;
+package ru.otus.hw02.service.testing;
 
 import ru.otus.hw02.domain.Question;
 

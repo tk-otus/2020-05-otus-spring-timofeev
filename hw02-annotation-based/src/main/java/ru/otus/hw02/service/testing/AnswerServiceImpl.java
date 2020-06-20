@@ -1,4 +1,4 @@
-package ru.otus.hw02.service;
+package ru.otus.hw02.service.testing;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

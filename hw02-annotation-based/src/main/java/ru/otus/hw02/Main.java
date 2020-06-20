@@ -2,7 +2,11 @@ package ru.otus.hw02;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import ru.otus.hw02.service.*;
+import ru.otus.hw02.service.console.ConsolePrintService;
+import ru.otus.hw02.service.testing.QuestionService;
+import ru.otus.hw02.service.testing.TestingService;
+import ru.otus.hw02.service.user.AcquaintanceService;
+import ru.otus.hw02.service.user.WelcomeService;
 
 @ComponentScan
 public class Main {
