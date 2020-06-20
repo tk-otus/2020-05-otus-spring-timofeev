@@ -35,7 +35,7 @@ public class TestingServiceImpl implements TestingService {
 
     @Override
     public Optional<Question> getCurrentQuestion() {
-        return Optional.of(currentQuestion);
+        return currentQuestion != null ? Optional.of(currentQuestion) : Optional.empty();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class TestingServiceImpl implements TestingService {
         printResults();
     }
 
-    private boolean checkCorrectAnswers(String userInput) {
+    public boolean checkCorrectAnswers(String userInput) {
         List<Answer> answers = new ArrayList<>();
         for (String userAnswer : userInput.split(",")) {
             userAnswer = userAnswer.trim();
