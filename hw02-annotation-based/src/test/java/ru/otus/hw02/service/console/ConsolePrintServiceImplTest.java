@@ -12,9 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ConsolePrintServiceImplTest {
     private static final String TEXT_TO_PRINT1 = "Hello, World!";
     private static final String TEXT_TO_PRINT2 = "Hello, World!" + System.lineSeparator() + "New line";
-
     private static final String TEXT_TO_READ = "User text";
-
     private ByteArrayOutputStream bos;
     private ConsolePrintService printService;
 
@@ -23,7 +21,6 @@ class ConsolePrintServiceImplTest {
         bos = new ByteArrayOutputStream();
         printService = new ConsolePrintServiceImpl(new PrintStream(bos), System.in);
     }
-
 
     @Test
     @DisplayName("может печатать одну строку")

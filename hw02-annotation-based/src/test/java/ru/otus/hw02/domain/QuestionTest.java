@@ -1,6 +1,7 @@
 package ru.otus.hw02.domain;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@DisplayName("Тест QuestionTest")
 class QuestionTest {
     private final Answer correct1 = mock(Answer.class);
     private final Answer correct2 = mock(Answer.class);
@@ -40,6 +42,7 @@ class QuestionTest {
     }
 
     @Test
+    @DisplayName("Может проверить правильный/неправильный варианты в вопросе с одним ответом")
     void testCheckAnswersSingleton() {
         oneTypeQuestion.addAnswer(correct1);
         oneTypeQuestion.addAnswer(incorrect1);
@@ -49,6 +52,7 @@ class QuestionTest {
     }
 
     @Test
+    @DisplayName("Может проверить правильные/неправильные варианты с вопросе с несколькими ответами")
     void testCheckAnswersList() {
         multiTypeQuestion.addAnswer(correct1);
         multiTypeQuestion.addAnswer(incorrect1);
@@ -58,6 +62,7 @@ class QuestionTest {
     }
 
     @Test
+    @DisplayName("Не может добавить больше одного правильного ответа в вопрос с одним ответом")
     void testAddAnswerMoreThanOneCorrectAnswerInOneTypeQuestion() {
         oneTypeQuestion.addAnswer(correct1);
         assertThrows(RuntimeException.class, () -> {
@@ -66,6 +71,7 @@ class QuestionTest {
     }
 
     @Test
+    @DisplayName("Может добавить несколько правильных/неправильных ответов в вопрос с несколькими ответами")
     void testAddAnswerMoreThanOneCorrectAnswerInMultiTypeQuestion() {
         multiTypeQuestion.addAnswer(correct1);
         multiTypeQuestion.addAnswer(correct2);
@@ -76,6 +82,7 @@ class QuestionTest {
     }
 
     @Test
+    @DisplayName("Может проверить возможность добавить новые ответы к вопросам")
     void testCanAddAnswerMoreThanOneCorrectAnswers() {
         oneTypeQuestion.addAnswer(correct1);
         multiTypeQuestion.addAnswer(correct1);
@@ -85,6 +92,7 @@ class QuestionTest {
     }
 
     @Test
+    @DisplayName("Может проверить невозможность добавлять одинаковые ответы к вопросам")
     void testCanAddAnswerIfExist() {
         oneTypeQuestion.addAnswer(correct1);
         multiTypeQuestion.addAnswer(correct1);
