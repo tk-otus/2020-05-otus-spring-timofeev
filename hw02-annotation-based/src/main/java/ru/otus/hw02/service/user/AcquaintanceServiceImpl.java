@@ -17,7 +17,7 @@ public class AcquaintanceServiceImpl implements AcquaintanceService {
     private String lastName;
 
     @Autowired
-    AcquaintanceServiceImpl(ConsolePrintService printService) {
+    public AcquaintanceServiceImpl(ConsolePrintService printService) {
         this.printService = printService;
     }
 
@@ -34,10 +34,12 @@ public class AcquaintanceServiceImpl implements AcquaintanceService {
         }
     }
 
+    @Override
     public String getFirstName() {
         return firstName;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
