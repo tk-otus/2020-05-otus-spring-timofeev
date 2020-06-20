@@ -3,89 +3,143 @@ package ru.otus.hw02.service.testing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.context.ContextConfiguration;
+import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.Question;
 import ru.otus.hw02.service.console.ConsolePrintService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-//@SpringBootConfiguration
-//@EnableConfigurationProperties
-//@ComponentScan({"ru.otus.hw02"})
-@DisplayName("Тест TestingServiceImplTest")
-@SpringBootTest(classes = TestingServiceImpl.class)
+@DisplayName("Сервис TestingServiceImplTest")
 class TestingServiceImplTest {
-
-    @MockBean
     QuestionService questionService;
+    TestingServiceImpl testingService;
+    ConsolePrintService printService = mock(ConsolePrintService.class);
 
-    @MockBean
-    ConsolePrintService printService;
+    List<Answer> answers = new ArrayList<>();
+    List<Question> questions = new ArrayList<>();
 
-    @Autowired
-    TestingService testingService;
+    @BeforeEach
+    void mockQuestionService() {
+        Answer answer1 = mock(Answer.class);
+        Answer answer2 = mock(Answer.class);
+        answers.add(answer1);
+        answers.add(answer2);
+
+        Question question1 = mock(Question.class);
+        when(question1.getAnswers()).thenReturn(answers);
+        when(question1.checkAnswers(answers)).thenReturn(true);
+        questions.add(question1);
+
+        Question question2 = mock(Question.class);
+        when(question2.getAnswers()).thenReturn(answers);
+        when(question2.checkAnswers(answers)).thenReturn(true);
+        questions.add(question2);
+
+        questionService = mock(QuestionService.class);
+        when(questionService.getAll()).thenReturn(questions);
+    }
+
+    @BeforeEach
+    void mockPrintService() {
+        printService = mock(ConsolePrintService.class);
+    }
 
     @BeforeEach
     void setUp() {
-        System.out.println("testingService: " + testingService);
-//        Question question1 = mock(Question.class);
-//        Question question2 = mock(Question.class);
-//        List<Question> questions = new ArrayList<>();
-//        questions.add(question1);
-//        questions.add(question2);
-//
-//        when(questionService.getAll()).thenReturn(questions);
+        testingService = new TestingServiceImpl(questionService, printService);
     }
 
     @Test
     @DisplayName("Может вернуть пустой текущий вопрос при первом обращении")
-    void getCurrentQuestionIsEmpty() {
+    void testGetCurrentQuestionIsEmpty() {
         Optional<Question> question = testingService.getCurrentQuestion();
         assertTrue(question.isEmpty());
     }
 
     @Test
     @DisplayName("Может вернуть текущий вопрос при первом обращении")
-    void getCurrentQuestionIsNotEmpty() {
+    void testGetCurrentQuestionIsNotEmpty() {
         Optional<Question> nextQuestion = testingService.getNextQuestion();
         Optional<Question> currentQuestion = testingService.getCurrentQuestion();
-        System.out.println("nextQuestion = " + nextQuestion);
-        System.out.println("currentQuestion = " + currentQuestion);
 
         assertTrue(currentQuestion.isPresent());
         assertEquals(nextQuestion, currentQuestion);
     }
 
     @Test
-    void getNextQuestion() {
+    @DisplayName("Может возвращать следующие вопросы")
+    void testGetNextQuestionWithoutEmpty() {
+        for (int i = 0; i < questions.size(); i++) {
+            Optional<Question> question = testingService.getNextQuestion();
+            assertTrue(question.isPresent());
+            assertTrue(questions.contains(question.get()));
+        }
     }
 
     @Test
-    void getAnswers() {
+    @DisplayName("Может возвращать пустой Optional когда вопросы закончились")
+    void testGetNextQuestionWithEmpty() {
+        for (int i = 0; i < questions.size(); i++) {
+            testingService.getNextQuestion();
+        }
+        assertTrue(testingService.getNextQuestion().isEmpty());
     }
 
     @Test
-    void printResults() {
+    @DisplayName("Может возвращать пустой список ответов, если текущего вопроса нет")
+    void testGetAnswersWhenCurrentQuestionIsNotSet() {
+        assertTrue(testingService.getAnswers().isEmpty());
     }
 
     @Test
-    void run() {
+    @DisplayName("Может возвращать список ответов из текущего вопроса")
+    void testGetAnswersWhenCurrentQuestionIsSet() {
+        for (Answer answer : testingService.getAnswers()) {
+            assertTrue(answers.contains(answer));
+        }
     }
 
     @Test
-    void checkCorrectAnswers() {
+    @DisplayName("Может проверить правильные ответы пользователя")
+    void testCheckCorrectAnswers() {
+        testingService.getNextQuestion();
+        String userInput = "1,2";
+        assertTrue(testingService.checkCorrectAnswers(userInput));
+    }
+
+    @Test
+    @DisplayName("Может проверить неправильные ответы пользователя")
+    void testCheckIncorrectAnswers() {
+        testingService.getNextQuestion();
+        String userInput = "1";
+        assertFalse(testingService.checkCorrectAnswers(userInput));
+    }
+
+    @Test
+    @DisplayName("Может проверить несуществующий номер ответа пользователя")
+    void testCheckNotExistAnswers() {
+        testingService.getNextQuestion();
+        String userInput = "1,5";
+        assertFalse(testingService.checkCorrectAnswers(userInput));
+    }
+
+    @Test
+    @DisplayName("Может провести тестирование пользователя")
+    void run() throws IOException {
+        given(printService.read()).willReturn("1,2").willReturn("1,2");
+        testingService.run();
+
+        for (Question question : testingService.getCorrectAnsweredQuestions()) {
+            assertTrue(questions.contains(question));
+        }
+        assertTrue(testingService.getIncorrectAnsweredQuestions().isEmpty());
     }
 }
