@@ -1,6 +1,5 @@
 package ru.otus.hw02.dao;
 
-import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import ru.otus.hw02.dao.exception.QuestionLoadingException;
 import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.QAType;
 import ru.otus.hw02.domain.Question;
+import ru.otus.hw02.util.SimpleCsvReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,13 +46,12 @@ public class QuestionDaoCsvImpl implements QuestionDao {
 
     private List<Question> readQuestionFromFile() throws QuestionLoadingException {
         List<Question> result = new ArrayList<>();
-        try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
-            csvReader.readNext(); // Пропускаем строку с заголовками
-            String[] values;
-            while ((values = csvReader.readNext()) != null) {
-                int id = Integer.parseInt(values[0]);
-                QAType type = QAType.valueOf(values[1]);
-                String questionText = values[2];
+        try {
+            List<String[]> stringsFromFile = new SimpleCsvReader(new InputStreamReader(file.getInputStream())).getResults();
+            for (String[] value : stringsFromFile) {
+                int id = Integer.parseInt(value[0]);
+                QAType type = QAType.valueOf(value[1]);
+                String questionText = value[2];
                 result.add(new Question(id, type, questionText));
             }
         } catch (FileNotFoundException e) {

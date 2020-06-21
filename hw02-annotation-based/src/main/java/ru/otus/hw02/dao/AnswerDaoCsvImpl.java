@@ -1,6 +1,5 @@
 package ru.otus.hw02.dao;
 
-import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw02.dao.exception.AnswerLoadingException;
 import ru.otus.hw02.domain.Answer;
+import ru.otus.hw02.util.SimpleCsvReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,14 +46,13 @@ public class AnswerDaoCsvImpl implements AnswerDao {
 
     private List<Answer> readAnswersFromFile() throws AnswerLoadingException {
         var result = new ArrayList<Answer>();
-        try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
-            csvReader.readNext(); // Пропускаем строку с заголовками
-            String[] values;
-            while ((values = csvReader.readNext()) != null) {
-                int id = Integer.parseInt(values[0]);
-                int questionId = Integer.parseInt(values[1]);
-                String answerText = values[2];
-                boolean isCorrect = Boolean.parseBoolean(values[3]);
+        try {
+            List<String[]> stringsFromFile = new SimpleCsvReader(new InputStreamReader(file.getInputStream())).getResults();
+            for (String[] value : stringsFromFile) {
+                int id = Integer.parseInt(value[0]);
+                int questionId = Integer.parseInt(value[1]);
+                String answerText = value[2];
+                boolean isCorrect = Boolean.parseBoolean(value[3]);
                 result.add(new Answer(id, questionId, answerText, isCorrect));
             }
         } catch (FileNotFoundException e) {
