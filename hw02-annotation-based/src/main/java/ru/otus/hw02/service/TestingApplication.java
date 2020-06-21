@@ -25,7 +25,7 @@ public class TestingApplication implements Runnable {
     @Override
     public void run() {
         printService.print(welcomeService.getWelcomeMessage());
-        acquaintanceService.run();
+        acquaintanceService.makeAcquaintance();
         testingService.run();
     }
 }
