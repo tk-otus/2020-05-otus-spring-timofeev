@@ -5,9 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.Question;
+import ru.otus.hw02.domain.TestingResult;
 import ru.otus.hw02.service.console.PrintService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +25,8 @@ class TestingServiceImplTest {
 
     List<Answer> answers = new ArrayList<>();
     List<Question> questions = new ArrayList<>();
+    Question correctQuestion;
+    Question incorrectQuestion;
 
     @BeforeEach
     void mockQuestionService() {
@@ -33,15 +35,15 @@ class TestingServiceImplTest {
         answers.add(answer1);
         answers.add(answer2);
 
-        Question question1 = mock(Question.class);
-        when(question1.getAnswers()).thenReturn(answers);
-        when(question1.checkAnswers(answers)).thenReturn(true);
-        questions.add(question1);
+        correctQuestion = mock(Question.class);
+        when(correctQuestion.getAnswers()).thenReturn(answers);
+        when(correctQuestion.checkAnswers(answers)).thenReturn(true);
+        questions.add(correctQuestion);
 
-        Question question2 = mock(Question.class);
-        when(question2.getAnswers()).thenReturn(answers);
-        when(question2.checkAnswers(answers)).thenReturn(true);
-        questions.add(question2);
+        incorrectQuestion = mock(Question.class);
+        when(incorrectQuestion.getAnswers()).thenReturn(answers);
+        when(incorrectQuestion.checkAnswers(answers)).thenReturn(false);
+        questions.add(incorrectQuestion);
 
         questionService = mock(QuestionService.class);
         when(questionService.getAll()).thenReturn(questions);
@@ -110,9 +112,14 @@ class TestingServiceImplTest {
     @Test
     @DisplayName("Может проверить правильные ответы пользователя")
     void testCheckCorrectAnswers() {
-        testingService.getNextQuestion();
-        String userInput = "1,2";
-        assertTrue(testingService.checkCorrectAnswers(userInput));
+        for (int i = 0; i < questions.size(); i++) {
+            Optional<Question> question = testingService.getNextQuestion();
+            if (question.isPresent() && question.get().equals(correctQuestion)) {
+                String userInput = "1,2";
+                assertTrue(testingService.checkCorrectAnswers(userInput));
+                break;
+            }
+        }
     }
 
     @Test
@@ -132,14 +139,45 @@ class TestingServiceImplTest {
     }
 
     @Test
-    @DisplayName("Может провести тестирование пользователя")
-    void run() {
+    @DisplayName("Результаты тестирования возвращают вопросы с правильными ответами")
+    void testTestingResultContainsCorrectAnswers() {
         given(printService.read()).willReturn("1,2").willReturn("1,2");
         testingService.run();
+        TestingResult result = testingService.getResult().get();
+        List<Question> correctAnsweredQuestions = result.getCorrectAnsweredQuestions();
 
-        for (Question question : testingService.getCorrectAnsweredQuestions()) {
+        assertEquals(1, correctAnsweredQuestions.size());
+        for (Question question : correctAnsweredQuestions) {
             assertTrue(questions.contains(question));
         }
-        assertTrue(testingService.getIncorrectAnsweredQuestions().isEmpty());
+    }
+
+    @Test
+    @DisplayName("Результаты тестирования возвращают вопросы с неправильными ответами")
+    void testTestingResultContainsIncorrectAnswers() {
+        given(printService.read()).willReturn("1,2").willReturn("1,2");
+        testingService.run();
+        TestingResult result = testingService.getResult().get();
+        List<Question> incorrectAnsweredQuestions = result.getIncorrectAnsweredQuestions();
+
+        assertEquals(1, incorrectAnsweredQuestions.size());
+        for (Question question : incorrectAnsweredQuestions) {
+            assertTrue(questions.contains(question));
+        }
+    }
+
+    @Test
+    @DisplayName("Если тестирование еще не завершено - нельзя получить результаты")
+    void testGetResultWhenTestingNotComplete() {
+        Optional<TestingResult> result = testingService.getResult();
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Возвращает результаты когда тестирование пройдено")
+    void testGetResult() {
+        given(printService.read()).willReturn("1,2").willReturn("1,2");
+        testingService.run();
+        assertTrue(testingService.getResult().isPresent());
     }
 }

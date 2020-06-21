@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.Question;
+import ru.otus.hw02.domain.TestingResult;
+import ru.otus.hw02.domain.TestingResultImpl;
 import ru.otus.hw02.service.console.PrintService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,11 +21,11 @@ public class TestingServiceImpl implements TestingService {
 
     private final PrintService printService;
     private final List<Question> questions;
-    private final List<Question> correctAnsweredQuestions = new ArrayList<>();
-    private final List<Question> incorrectAnsweredQuestions = new ArrayList<>();
     private Question currentQuestion;
     private List<Answer> currentAnswers;
     private int currentQuestionIndex = -1;
+    private final TestingResult testingResult = new TestingResultImpl();
+    private boolean testingComplete = false;
 
     @Autowired
     TestingServiceImpl(QuestionService questionService, PrintService printService) {
@@ -66,8 +67,8 @@ public class TestingServiceImpl implements TestingService {
                         "Correct answers: %s\n" +
                         "Incorrect answers: %s\n" +
                         "Total questions: %s",
-                correctAnsweredQuestions.size(),
-                incorrectAnsweredQuestions.size(),
+                testingResult.getCorrectAnsweredQuestions().size(),
+                testingResult.getIncorrectAnsweredQuestions().size(),
                 questions.size()
         ));
     }
@@ -85,21 +86,23 @@ public class TestingServiceImpl implements TestingService {
             }
             String userAnswers = printService.read();
             if (checkCorrectAnswers(userAnswers)) {
-                correctAnsweredQuestions.add(question);
+                testingResult.addCorrectAnsweredQuestion(question);
             } else {
-                incorrectAnsweredQuestions.add(question);
+                testingResult.addIncorrectAnsweredQuestion(question);
             }
             questionObj = getNextQuestion();
         }
+        testingComplete = true;
         printResults();
     }
 
-    public List<Question> getCorrectAnsweredQuestions() {
-        return correctAnsweredQuestions;
-    }
-
-    public List<Question> getIncorrectAnsweredQuestions() {
-        return incorrectAnsweredQuestions;
+    @Override
+    public Optional<TestingResult> getResult() {
+        if (testingComplete) {
+            return Optional.of(testingResult);
+        } else {
+            return Optional.empty();
+        }
     }
 
     protected boolean checkCorrectAnswers(String userInput) {
