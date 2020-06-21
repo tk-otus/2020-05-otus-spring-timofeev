@@ -19,12 +19,10 @@ public class ConsolePrintServiceImpl implements PrintService {
         this.sc = new Scanner(in);
     }
 
-    @Override
     public void setOut(PrintStream out) {
         this.out = out;
     }
 
-    @Override
     public void setIn(InputStream in) {
         this.sc = new Scanner(in);
     }

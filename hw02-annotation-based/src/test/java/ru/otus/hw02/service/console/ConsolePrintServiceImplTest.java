@@ -14,7 +14,7 @@ class ConsolePrintServiceImplTest {
     private static final String TEXT_TO_PRINT2 = "Hello, World!" + System.lineSeparator() + "New line";
     private static final String TEXT_TO_READ = "User text";
     private ByteArrayOutputStream bos;
-    private PrintService printService;
+    private ConsolePrintServiceImpl printService;
 
     @BeforeEach
     void setUp() {
