@@ -77,21 +77,17 @@ public class TestingServiceImpl implements TestingService {
         Optional<Question> questionObj = getNextQuestion();
         while (questionObj.isPresent()) {
             Question question = questionObj.get();
-            try {
-                printService.print("Question: " + question.getQuestionText() + " (type: " + question.getType() + ")");
-                int id = 1;
-                for (Answer answer : getAnswers()) {
-                    printService.print(id + ". " + answer.getAnswer() + " (is correct: " + answer.isCorrect() + ")");
-                    id++;
-                }
-                String userAnswers = printService.read();
-                if (checkCorrectAnswers(userAnswers)) {
-                    correctAnsweredQuestions.add(question);
-                } else {
-                    incorrectAnsweredQuestions.add(question);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            printService.print("Question: " + question.getQuestionText() + " (type: " + question.getType() + ")");
+            int id = 1;
+            for (Answer answer : getAnswers()) {
+                printService.print(id + ". " + answer.getAnswer() + " (is correct: " + answer.isCorrect() + ")");
+                id++;
+            }
+            String userAnswers = printService.read();
+            if (checkCorrectAnswers(userAnswers)) {
+                correctAnsweredQuestions.add(question);
+            } else {
+                incorrectAnsweredQuestions.add(question);
             }
             questionObj = getNextQuestion();
         }

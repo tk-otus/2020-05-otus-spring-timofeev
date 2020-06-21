@@ -15,6 +15,6 @@ public interface PrintService {
 
     void print(String string);
 
-    public String read() throws IOException;
+    public String read();
 
 }
