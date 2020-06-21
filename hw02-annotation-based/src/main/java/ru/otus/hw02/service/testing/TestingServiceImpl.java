@@ -102,8 +102,7 @@ public class TestingServiceImpl implements TestingService {
         return incorrectAnsweredQuestions;
     }
 
-    @Override
-    public boolean checkCorrectAnswers(String userInput) {
+    protected boolean checkCorrectAnswers(String userInput) {
         List<Answer> answers = new ArrayList<>();
         for (String userAnswer : userInput.split(",")) {
             userAnswer = userAnswer.trim();
