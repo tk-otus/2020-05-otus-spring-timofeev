@@ -133,7 +133,7 @@ class TestingServiceImplTest {
 
     @Test
     @DisplayName("Может провести тестирование пользователя")
-    void run() throws IOException {
+    void run() {
         given(printService.read()).willReturn("1,2").willReturn("1,2");
         testingService.run();
 
