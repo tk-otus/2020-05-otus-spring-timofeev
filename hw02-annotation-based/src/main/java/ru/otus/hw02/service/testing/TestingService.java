@@ -8,12 +8,12 @@ import java.util.Optional;
 
 public interface TestingService extends Runnable {
 
-    public Optional<Question> getCurrentQuestion();
+    Optional<Question> getCurrentQuestion();
 
-    public Optional<Question> getNextQuestion();
+    Optional<Question> getNextQuestion();
 
-    public List<Answer> getAnswers();
+    List<Answer> getAnswers();
 
-    public void printResults();
+    void printResults();
 
 }
