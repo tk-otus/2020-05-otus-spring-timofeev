@@ -13,6 +13,7 @@
     <modules>
         <module>hw01-intro</module>
         <module>hw02-annotation-based</module>
+        <module>hw03-spring-boot</module>
     </modules>
 
     <properties>

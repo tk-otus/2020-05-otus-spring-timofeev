@@ -1,0 +1,6 @@
+id,type,questionText
+1,ONE,What is it?
+2,MULTI,Multi answer?
+3,ONE,One more question. What do you think?
+4,MULTI,"Another question, now with comma. Is it works?"
+5,ONE,The Last question. Are you happy?
