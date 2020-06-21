@@ -3,7 +3,7 @@ package ru.otus.hw02.service.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.hw02.service.console.ConsolePrintService;
+import ru.otus.hw02.service.console.PrintService;
 
 import java.io.IOException;
 
@@ -14,12 +14,12 @@ import static org.mockito.Mockito.mock;
 
 @DisplayName("Сервис AcquaintanceServiceImplTest")
 class AcquaintanceServiceImplTest {
-    ConsolePrintService printService;
+    PrintService printService;
     AcquaintanceService acquaintanceService;
 
     @BeforeEach
     void setUp() {
-        printService = mock(ConsolePrintService.class);
+        printService = mock(PrintService.class);
         acquaintanceService = new AcquaintanceServiceImpl(printService);
     }
 

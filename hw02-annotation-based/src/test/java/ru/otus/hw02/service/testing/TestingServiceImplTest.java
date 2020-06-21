@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.Question;
-import ru.otus.hw02.service.console.ConsolePrintService;
+import ru.otus.hw02.service.console.PrintService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 class TestingServiceImplTest {
     QuestionService questionService;
     TestingServiceImpl testingService;
-    ConsolePrintService printService = mock(ConsolePrintService.class);
+    PrintService printService = mock(PrintService.class);
 
     List<Answer> answers = new ArrayList<>();
     List<Question> questions = new ArrayList<>();
@@ -49,7 +49,7 @@ class TestingServiceImplTest {
 
     @BeforeEach
     void mockPrintService() {
-        printService = mock(ConsolePrintService.class);
+        printService = mock(PrintService.class);
     }
 
     @BeforeEach

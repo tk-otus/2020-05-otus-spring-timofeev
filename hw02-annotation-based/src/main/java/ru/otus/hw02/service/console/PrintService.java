@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.List;
 
-public interface ConsolePrintService {
+public interface PrintService {
 
     public void setOut(PrintStream out);
 

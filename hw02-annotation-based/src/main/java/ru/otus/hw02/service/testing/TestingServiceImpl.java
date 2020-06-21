@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.hw02.domain.Answer;
 import ru.otus.hw02.domain.Question;
-import ru.otus.hw02.service.console.ConsolePrintService;
+import ru.otus.hw02.service.console.PrintService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class TestingServiceImpl implements TestingService {
     private static final Logger logger = LoggerFactory.getLogger(TestingServiceImpl.class);
 
-    private final ConsolePrintService printService;
+    private final PrintService printService;
     private final List<Question> questions;
     private final List<Question> correctAnsweredQuestions = new ArrayList<>();
     private final List<Question> incorrectAnsweredQuestions = new ArrayList<>();
@@ -27,7 +27,7 @@ public class TestingServiceImpl implements TestingService {
     private int currentQuestionIndex = -1;
 
     @Autowired
-    TestingServiceImpl(QuestionService questionService, ConsolePrintService printService) {
+    TestingServiceImpl(QuestionService questionService, PrintService printService) {
         this.printService = printService;
         questions = questionService.getAll();
         Collections.shuffle(questions);

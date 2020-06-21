@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.Scanner;
 
 @Service
-public class ConsolePrintServiceImpl implements ConsolePrintService {
+public class ConsolePrintServiceImpl implements PrintService {
     private PrintStream out;
     private Scanner sc;
 

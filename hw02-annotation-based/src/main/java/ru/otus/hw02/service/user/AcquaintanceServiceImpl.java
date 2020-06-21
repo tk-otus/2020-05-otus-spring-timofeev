@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.hw02.service.console.ConsolePrintService;
+import ru.otus.hw02.service.console.PrintService;
 
 import java.io.IOException;
 
@@ -12,12 +12,12 @@ import java.io.IOException;
 public class AcquaintanceServiceImpl implements AcquaintanceService {
     private static final Logger logger = LoggerFactory.getLogger(AcquaintanceServiceImpl.class);
 
-    private final ConsolePrintService printService;
+    private final PrintService printService;
     private String firstName;
     private String lastName;
 
     @Autowired
-    public AcquaintanceServiceImpl(ConsolePrintService printService) {
+    public AcquaintanceServiceImpl(PrintService printService) {
         this.printService = printService;
     }
 
