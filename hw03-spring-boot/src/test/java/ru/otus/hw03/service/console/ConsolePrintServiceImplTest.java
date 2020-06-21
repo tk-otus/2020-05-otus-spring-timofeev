@@ -1,4 +1,4 @@
-package ru.otus.hw02.service.console;
+package ru.otus.hw03.service.console;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

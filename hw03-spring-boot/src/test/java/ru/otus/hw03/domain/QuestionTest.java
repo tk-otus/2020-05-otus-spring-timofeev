@@ -1,4 +1,4 @@
-package ru.otus.hw02.domain;
+package ru.otus.hw03.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

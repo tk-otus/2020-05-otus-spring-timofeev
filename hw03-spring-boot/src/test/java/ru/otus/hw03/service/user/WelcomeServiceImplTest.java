@@ -1,4 +1,4 @@
-package ru.otus.hw02.service.user;
+package ru.otus.hw03.service.user;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

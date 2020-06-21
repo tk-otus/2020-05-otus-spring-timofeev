@@ -1,4 +1,4 @@
-package ru.otus.hw02.service.testing;
+package ru.otus.hw03.service.testing;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
