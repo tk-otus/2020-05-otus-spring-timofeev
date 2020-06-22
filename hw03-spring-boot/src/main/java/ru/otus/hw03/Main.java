@@ -2,15 +2,15 @@ package ru.otus.hw03;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.service.console.ConsolePrintService;
 import ru.otus.hw03.service.testing.TestingService;
 import ru.otus.hw03.service.user.AcquaintanceService;
 import ru.otus.hw03.service.user.WelcomeService;
 
-@PropertySource("classpath:application.properties")
 @SpringBootApplication
+@EnableConfigurationProperties(GlobalProps.class)
 public class Main {
     public static void main(String[] args) {
         var context = SpringApplication.run(Main.class, args);

@@ -4,9 +4,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
+import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.dao.exception.AnswerLoadingException;
 import ru.otus.hw03.domain.Answer;
 
@@ -21,12 +23,11 @@ import java.util.stream.Collectors;
 @Repository
 public class AnswerDaoCsvImpl implements AnswerDao {
     private static final Logger logger = LoggerFactory.getLogger(AnswerDaoCsvImpl.class);
-    private final Resource file;
     private final List<Answer> answers;
 
-    public AnswerDaoCsvImpl(@Value("classpath:${global.answers.csv.file}") Resource file) throws AnswerLoadingException {
-        this.file = file;
-        answers = readAnswersFromFile();
+    @Autowired
+    public AnswerDaoCsvImpl(ResourceLoader loader, GlobalProps props) throws AnswerLoadingException {
+        answers = readAnswersFromFile(loader.getResource("classpath:" + props.getAnswersCsvfile()));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class AnswerDaoCsvImpl implements AnswerDao {
         return answers;
     }
 
-    private List<Answer> readAnswersFromFile() throws AnswerLoadingException {
+    private List<Answer> readAnswersFromFile(Resource file) throws AnswerLoadingException {
         var result = new ArrayList<Answer>();
         try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             csvReader.readNext(); // Пропускаем строку с заголовками

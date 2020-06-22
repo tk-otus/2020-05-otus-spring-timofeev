@@ -2,9 +2,11 @@ package ru.otus.hw03.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
+import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.dao.exception.WelcomeMessageLoadingException;
 
 import java.io.*;
@@ -13,15 +15,14 @@ import java.io.*;
 public class WelcomeDaoFileImpl implements WelcomeDao {
     private static final Logger logger = LoggerFactory.getLogger(WelcomeDaoFileImpl.class);
 
-    private final Resource file;
     private final String welcomeMessage;
 
-    WelcomeDaoFileImpl(@Value("classpath:${global.welcome.message.file}") Resource file) throws WelcomeMessageLoadingException {
-        this.file = file;
-        this.welcomeMessage = readWelcomeFromFile();
+    @Autowired
+    WelcomeDaoFileImpl(ResourceLoader loader, GlobalProps props) throws WelcomeMessageLoadingException {
+        this.welcomeMessage = readWelcomeFromFile(loader.getResource("classpath:" + props.getWelcomeMessageFile()));
     }
 
-    private String readWelcomeFromFile() throws WelcomeMessageLoadingException {
+    private String readWelcomeFromFile(Resource file) throws WelcomeMessageLoadingException {
         final var result = new StringBuilder();
         try (var fileReader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line = null;
