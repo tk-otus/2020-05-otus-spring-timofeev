@@ -3,6 +3,8 @@ package ru.otus.hw03.service.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.MessageSource;
+import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.service.console.ConsolePrintService;
 import ru.otus.hw03.service.user.AcquaintanceService;
 import ru.otus.hw03.service.user.AcquaintanceServiceImpl;
@@ -17,12 +19,16 @@ import static org.mockito.Mockito.mock;
 @DisplayName("Сервис AcquaintanceServiceImplTest")
 class AcquaintanceServiceImplTest {
     ConsolePrintService printService;
+    MessageSource messageSource;
+    GlobalProps globalProps;
     AcquaintanceService acquaintanceService;
 
     @BeforeEach
     void setUp() {
         printService = mock(ConsolePrintService.class);
-        acquaintanceService = new AcquaintanceServiceImpl(printService);
+        messageSource = mock(MessageSource.class);
+        globalProps = mock(GlobalProps.class);
+        acquaintanceService = new AcquaintanceServiceImpl(printService, messageSource, globalProps);
     }
 
     @Test

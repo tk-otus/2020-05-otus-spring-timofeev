@@ -1,6 +1,11 @@
-id,type,questionText
-1,ONE,What is it?
-2,MULTI,Multi answer?
-3,ONE,One more question. What do you think?
-4,MULTI,"Another question, now with comma. Is it works?"
-5,ONE,The Last question. Are you happy?
+id,type,questionText,locale
+1,ONE,What is it?,en
+2,MULTI,Multi answer?,en
+3,ONE,One more question. What do you think?,en
+4,MULTI,"Another question, now with comma. Is it works?",en
+5,ONE,The Last question. Are you happy?,en
+6,ONE,Что это такое?,ru_RU
+7,MULTI,Это вопрос с несколькими ответами?,ru_RU
+8,ONE,Еще один вопрос. Что вы думаете?,ru_RU
+9,MULTI,"И еще один вопрос. На этот раз в кавычках. Все работает?",ru_RU
+10,ONE,Финальный вопрос. Вы довольны?,ru_RU

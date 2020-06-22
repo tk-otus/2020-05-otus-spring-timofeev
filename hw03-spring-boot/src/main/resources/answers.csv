@@ -1,13 +1,25 @@
-id,questionId,answer,isCorrect
-1,1,Correct answer,true
-2,1,Incorrect answer,false
-3,2,Yes!,true
-4,2,Yes of course!,true
-5,2,Nope...,false
-6,3,Very cool!,true
-7,3,Very bad...,false
-8,4,Yep!,true
-9,4,Of course,true
-10,4,No,false
-11,5,I'm very sad!,false
-12,5,I'm very happy!,true
+id,questionId,answer,isCorrect,locale
+1,1,Correct answer,true,en
+2,1,Incorrect answer,false,en
+3,2,Yes!,true,en
+4,2,Yes of course!,true,en
+5,2,Nope...,false,en
+6,3,Very cool!,true,en
+7,3,Very bad...,false,en
+8,4,Yep!,true,en
+9,4,Of course,true,en
+10,4,No,false,en
+11,5,I'm very sad!,false,en
+12,5,I'm very happy!,true,en
+13,6,Правильный ответ,true,ru_RU
+14,6,Неправильный ответ,false,ru_RU
+15,7,Да!,true,ru_RU
+16,7,Да, конечно!,true,ru_RU
+17,7,Нет...,false,ru_RU
+18,8,Очень круто!,true,ru_RU
+19,8,Совсем плохо...,false,ru_RU
+20,9,О да!,true,ru_RU
+21,9,Конечно,true,ru_RU
+22,9,Нет,false,ru_RU
+23,10,Я очень расстроен!,false,ru_RU
+24,10,Я очень доволен!,true,ru_RU

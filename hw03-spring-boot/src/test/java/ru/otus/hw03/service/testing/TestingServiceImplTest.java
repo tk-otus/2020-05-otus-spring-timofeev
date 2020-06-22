@@ -3,6 +3,8 @@ package ru.otus.hw03.service.testing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.MessageSource;
+import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.domain.Answer;
 import ru.otus.hw03.domain.Question;
 import ru.otus.hw03.service.console.ConsolePrintService;
@@ -24,6 +26,8 @@ class TestingServiceImplTest {
     QuestionService questionService;
     TestingServiceImpl testingService;
     ConsolePrintService printService = mock(ConsolePrintService.class);
+    MessageSource messageSource = mock(MessageSource.class);
+    GlobalProps props = mock(GlobalProps.class);
 
     List<Answer> answers = new ArrayList<>();
     List<Question> questions = new ArrayList<>();
@@ -56,7 +60,7 @@ class TestingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        testingService = new TestingServiceImpl(questionService, printService);
+        testingService = new TestingServiceImpl(questionService, printService, messageSource, props);
     }
 
     @Test

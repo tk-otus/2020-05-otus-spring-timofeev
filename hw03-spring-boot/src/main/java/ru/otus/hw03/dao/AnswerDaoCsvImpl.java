@@ -23,10 +23,13 @@ import java.util.stream.Collectors;
 @Repository
 public class AnswerDaoCsvImpl implements AnswerDao {
     private static final Logger logger = LoggerFactory.getLogger(AnswerDaoCsvImpl.class);
+
+    private final GlobalProps props;
     private final List<Answer> answers;
 
     @Autowired
     public AnswerDaoCsvImpl(ResourceLoader loader, GlobalProps props) throws AnswerLoadingException {
+        this.props = props;
         answers = readAnswersFromFile(loader.getResource("classpath:" + props.getAnswersCsvfile()));
     }
 
@@ -55,7 +58,9 @@ public class AnswerDaoCsvImpl implements AnswerDao {
                 int questionId = Integer.parseInt(values[1]);
                 String answerText = values[2];
                 boolean isCorrect = Boolean.parseBoolean(values[3]);
-                result.add(new Answer(id, questionId, answerText, isCorrect));
+                String locale = values[4];
+                if (locale.equals(props.getLocale().toString()))
+                    result.add(new Answer(id, questionId, answerText, isCorrect));
             }
         } catch (FileNotFoundException e) {
             throw new AnswerLoadingException("Answers file (" + file.getFilename() + ") not found", e);

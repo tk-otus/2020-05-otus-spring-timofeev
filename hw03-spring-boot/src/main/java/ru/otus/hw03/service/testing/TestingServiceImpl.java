@@ -3,7 +3,9 @@ package ru.otus.hw03.service.testing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.domain.Answer;
 import ru.otus.hw03.domain.Question;
 import ru.otus.hw03.service.console.ConsolePrintService;
@@ -19,6 +21,8 @@ public class TestingServiceImpl implements TestingService {
     private static final Logger logger = LoggerFactory.getLogger(TestingServiceImpl.class);
 
     private final ConsolePrintService printService;
+    private final MessageSource messageSource;
+    private final GlobalProps props;
     private final List<Question> questions;
     private final List<Question> correctAnsweredQuestions = new ArrayList<>();
     private final List<Question> incorrectAnsweredQuestions = new ArrayList<>();
@@ -27,8 +31,10 @@ public class TestingServiceImpl implements TestingService {
     private int currentQuestionIndex = -1;
 
     @Autowired
-    TestingServiceImpl(QuestionService questionService, ConsolePrintService printService) {
+    TestingServiceImpl(QuestionService questionService, ConsolePrintService printService, MessageSource messageSource, GlobalProps props) {
         this.printService = printService;
+        this.messageSource = messageSource;
+        this.props = props;
         questions = questionService.getAll();
         Collections.shuffle(questions);
     }
@@ -59,17 +65,14 @@ public class TestingServiceImpl implements TestingService {
 
     @Override
     public void printResults() {
-        printService.print("Thank you for your answers!");
-        printService.print("Results:");
-        printService.print(String.format(
-                "=============================\n" +
-                        "Correct answers: %s\n" +
-                        "Incorrect answers: %s\n" +
-                        "Total questions: %s",
-                correctAnsweredQuestions.size(),
-                incorrectAnsweredQuestions.size(),
-                questions.size()
-        ));
+        String[] messages = new String[]{
+                Integer.toString(correctAnsweredQuestions.size()),
+                Integer.toString(incorrectAnsweredQuestions.size()),
+                Integer.toString(questions.size())
+        };
+        printService.print(
+                messageSource.getMessage("testing.result.to.print", messages, props.getLocale())
+        );
     }
 
     @Override
@@ -78,10 +81,17 @@ public class TestingServiceImpl implements TestingService {
         while (questionObj.isPresent()) {
             Question question = questionObj.get();
             try {
-                printService.print("Question: " + question.getQuestionText() + " (type: " + question.getType() + ")");
+                printService.print(messageSource.getMessage("testing.print.question", new String[]{
+                                question.getQuestionText(),
+                                question.getType().toString()},
+                        props.getLocale()));
                 int id = 1;
                 for (Answer answer : getAnswers()) {
-                    printService.print(id + ". " + answer.getAnswer() + " (is correct: " + answer.isCorrect() + ")");
+                    printService.print(messageSource.getMessage("testing.print.answer", new String[]{
+                                    Integer.toString(id),
+                                    answer.getAnswer(),
+                                    Boolean.toString(answer.isCorrect())},
+                            props.getLocale()));
                     id++;
                 }
                 String userAnswers = printService.read();
