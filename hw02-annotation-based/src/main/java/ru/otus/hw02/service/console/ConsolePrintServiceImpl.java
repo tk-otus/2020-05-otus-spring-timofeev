@@ -19,14 +19,6 @@ public class ConsolePrintServiceImpl implements PrintService {
         this.sc = new Scanner(in);
     }
 
-    public void setOut(PrintStream out) {
-        this.out = out;
-    }
-
-    public void setIn(InputStream in) {
-        this.sc = new Scanner(in);
-    }
-
     @Override
     public void print(String string) {
         out.println(string);

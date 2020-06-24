@@ -40,7 +40,7 @@ class ConsolePrintServiceImplTest {
     @DisplayName("Может прочитать пользовательский ввод")
     void testRead() throws IOException {
         var bis = new ByteArrayInputStream(TEXT_TO_READ.getBytes());
-        printService.setIn(bis);
+        printService = new ConsolePrintServiceImpl(new PrintStream(bos), bis);
         assertEquals(TEXT_TO_READ, printService.read());
     }
 }
