@@ -7,15 +7,8 @@ import ru.otus.hw02.domain.TestingResult;
 import java.util.List;
 import java.util.Optional;
 
-public interface TestingService extends Runnable {
+public interface TestingService {
 
-    Optional<Question> getCurrentQuestion();
+    void start();
 
-    Optional<Question> getNextQuestion();
-
-    List<Answer> getAnswers();
-
-    void printResults();
-
-    Optional<TestingResult> getResult();
 }

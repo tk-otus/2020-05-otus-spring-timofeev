@@ -8,7 +8,7 @@ import ru.otus.hw02.service.user.AcquaintanceService;
 import ru.otus.hw02.service.user.WelcomeService;
 
 @Service
-public class TestingApplication implements Runnable {
+public class TestingApplication {
     private final PrintService printService;
     private final WelcomeService welcomeService;
     private final AcquaintanceService acquaintanceService;
@@ -22,10 +22,9 @@ public class TestingApplication implements Runnable {
         this.testingService = testingService;
     }
 
-    @Override
     public void run() {
         printService.print(welcomeService.getWelcomeMessage());
         acquaintanceService.makeAcquaintance();
-        testingService.run();
+        testingService.start();
     }
 }

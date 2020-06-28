@@ -11,4 +11,6 @@ public interface TestingResult {
     void addCorrectAnsweredQuestion(Question question);
 
     void addIncorrectAnsweredQuestion(Question question);
+
+    int getTotalQuestionsCount();
 }

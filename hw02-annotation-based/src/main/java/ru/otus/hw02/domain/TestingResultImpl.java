@@ -26,4 +26,9 @@ public class TestingResultImpl implements TestingResult {
     public void addIncorrectAnsweredQuestion(Question question) {
         incorrectAnsweredQuestions.add(question);
     }
+
+    @Override
+    public int getTotalQuestionsCount() {
+        return correctAnsweredQuestions.size() + incorrectAnsweredQuestions.size();
+    }
 }
