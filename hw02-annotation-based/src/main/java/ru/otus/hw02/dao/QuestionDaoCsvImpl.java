@@ -15,7 +15,6 @@ import ru.otus.hw02.util.SimpleCsvReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +24,14 @@ public class QuestionDaoCsvImpl implements QuestionDao {
     private static final Logger logger = LoggerFactory.getLogger(QuestionDaoCsvImpl.class);
     private final Resource file;
     private final AnswerDao dao;
+    private final SimpleCsvReader reader;
     private final List<Question> questions;
 
     @Autowired
-    public QuestionDaoCsvImpl(@Value("classpath:${global.questions.csv.file}") Resource file, AnswerDao dao) throws QuestionLoadingException {
+    public QuestionDaoCsvImpl(@Value("classpath:${global.questions.csv.file}") Resource file, AnswerDao dao, SimpleCsvReader reader) throws QuestionLoadingException {
         this.file = file;
         this.dao = dao;
+        this.reader = reader;
         questions = readQuestionFromFile();
     }
 
@@ -47,7 +48,7 @@ public class QuestionDaoCsvImpl implements QuestionDao {
     private List<Question> readQuestionFromFile() throws QuestionLoadingException {
         List<Question> result = new ArrayList<>();
         try {
-            List<String[]> stringsFromFile = new SimpleCsvReader(new InputStreamReader(file.getInputStream())).getResults();
+            List<String[]> stringsFromFile = reader.getResults(file);
             for (String[] value : stringsFromFile) {
                 int id = Integer.parseInt(value[0]);
                 QAType type = QAType.valueOf(value[1]);
