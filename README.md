@@ -5,3 +5,4 @@
 
 ### Домашние задачи
 1. [Homework #1: Введение в Spring Framework](hw01-intro)
+1. [Homework #2: Конфигурирование Spring-приложений](hw02-annotation-based)
