@@ -1,8 +1,7 @@
 package ru.otus.hw03.service.user;
 
-public interface AcquaintanceService extends Runnable {
+import ru.otus.hw03.domain.User;
 
-    public String getFirstName();
-
-    public String getLastName();
+public interface AcquaintanceService {
+    User makeAcquaintance();
 }

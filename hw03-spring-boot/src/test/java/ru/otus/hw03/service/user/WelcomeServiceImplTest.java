@@ -5,8 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.hw03.dao.WelcomeDao;
 import ru.otus.hw03.dao.WelcomeDaoFileImpl;
-import ru.otus.hw03.service.user.WelcomeService;
-import ru.otus.hw03.service.user.WelcomeServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

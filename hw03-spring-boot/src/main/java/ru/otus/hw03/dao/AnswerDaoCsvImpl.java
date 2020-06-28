@@ -1,6 +1,5 @@
 package ru.otus.hw03.dao;
 
-import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +10,10 @@ import org.springframework.stereotype.Repository;
 import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.dao.exception.AnswerLoadingException;
 import ru.otus.hw03.domain.Answer;
+import ru.otus.hw03.util.SimpleCsvReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +23,12 @@ import java.util.stream.Collectors;
 public class AnswerDaoCsvImpl implements AnswerDao {
     private static final Logger logger = LoggerFactory.getLogger(AnswerDaoCsvImpl.class);
 
-    private final GlobalProps props;
+    private final SimpleCsvReader reader;
     private final List<Answer> answers;
 
     @Autowired
-    public AnswerDaoCsvImpl(ResourceLoader loader, GlobalProps props) throws AnswerLoadingException {
-        this.props = props;
+    public AnswerDaoCsvImpl(SimpleCsvReader reader, GlobalProps props, ResourceLoader loader) throws AnswerLoadingException {
+        this.reader = reader;
         answers = readAnswersFromFile(loader.getResource("classpath:" + props.getAnswersCsvfile()));
     }
 
@@ -50,17 +49,14 @@ public class AnswerDaoCsvImpl implements AnswerDao {
 
     private List<Answer> readAnswersFromFile(Resource file) throws AnswerLoadingException {
         var result = new ArrayList<Answer>();
-        try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
-            csvReader.readNext(); // Пропускаем строку с заголовками
-            String[] values;
-            while ((values = csvReader.readNext()) != null) {
-                int id = Integer.parseInt(values[0]);
-                int questionId = Integer.parseInt(values[1]);
-                String answerText = values[2];
-                boolean isCorrect = Boolean.parseBoolean(values[3]);
-                String locale = values[4];
-                if (locale.equals(props.getLocale().toString()))
-                    result.add(new Answer(id, questionId, answerText, isCorrect));
+        try {
+            List<String[]> stringsFromFile = reader.getResults(file);
+            for (String[] value : stringsFromFile) {
+                int id = Integer.parseInt(value[0]);
+                int questionId = Integer.parseInt(value[1]);
+                String answerText = value[2];
+                boolean isCorrect = Boolean.parseBoolean(value[3]);
+                result.add(new Answer(id, questionId, answerText, isCorrect));
             }
         } catch (FileNotFoundException e) {
             throw new AnswerLoadingException("Answers file (" + file.getFilename() + ") not found", e);

@@ -1,6 +1,5 @@
 package ru.otus.hw03.dao;
 
-import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +12,10 @@ import ru.otus.hw03.dao.exception.QuestionLoadingException;
 import ru.otus.hw03.domain.Answer;
 import ru.otus.hw03.domain.QAType;
 import ru.otus.hw03.domain.Question;
+import ru.otus.hw03.util.SimpleCsvReader;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,13 +25,13 @@ public class QuestionDaoCsvImpl implements QuestionDao {
     private static final Logger logger = LoggerFactory.getLogger(QuestionDaoCsvImpl.class);
 
     private final AnswerDao dao;
-    private final GlobalProps props;
+    private final SimpleCsvReader reader;
     private final List<Question> questions;
 
     @Autowired
-    public QuestionDaoCsvImpl(AnswerDao dao, ResourceLoader loader, GlobalProps props) throws QuestionLoadingException {
+    public QuestionDaoCsvImpl(AnswerDao dao, SimpleCsvReader reader, GlobalProps props, ResourceLoader loader) throws QuestionLoadingException {
         this.dao = dao;
-        this.props = props;
+        this.reader = reader;
         questions = readQuestionFromFile(loader.getResource("classpath:" + props.getQuestionsCsvfile()));
     }
 
@@ -48,16 +47,13 @@ public class QuestionDaoCsvImpl implements QuestionDao {
 
     private List<Question> readQuestionFromFile(Resource file) throws QuestionLoadingException {
         List<Question> result = new ArrayList<>();
-        try (var csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
-            csvReader.readNext(); // Пропускаем строку с заголовками
-            String[] values;
-            while ((values = csvReader.readNext()) != null) {
-                int id = Integer.parseInt(values[0]);
-                QAType type = QAType.valueOf(values[1]);
-                String questionText = values[2];
-                String locale = values[3];
-                if (locale.equals(props.getLocale().toString()))
-                    result.add(new Question(id, type, questionText));
+        try {
+            List<String[]> stringsFromFile = reader.getResults(file);
+            for (String[] value : stringsFromFile) {
+                int id = Integer.parseInt(value[0]);
+                QAType type = QAType.valueOf(value[1]);
+                String questionText = value[2];
+                result.add(new Question(id, type, questionText));
             }
         } catch (FileNotFoundException e) {
             throw new QuestionLoadingException("Questions file (" + file.getFilename() + ") not found", e);

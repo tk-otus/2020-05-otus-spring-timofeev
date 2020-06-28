@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import ru.otus.hw03.dao.QuestionDao;
 import ru.otus.hw03.dao.QuestionDaoCsvImpl;
 import ru.otus.hw03.domain.Question;
-import ru.otus.hw03.service.testing.QuestionService;
-import ru.otus.hw03.service.testing.QuestionServiceImpl;
 
 import java.util.Collections;
 import java.util.List;

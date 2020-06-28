@@ -6,47 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.hw03.configs.GlobalProps;
-import ru.otus.hw03.service.console.ConsolePrintService;
-
-import java.io.IOException;
+import ru.otus.hw03.domain.User;
+import ru.otus.hw03.service.console.PrintService;
 
 @Service
 public class AcquaintanceServiceImpl implements AcquaintanceService {
     private static final Logger logger = LoggerFactory.getLogger(AcquaintanceServiceImpl.class);
 
-    private final ConsolePrintService printService;
+    private final PrintService printService;
     private final MessageSource messageSource;
     private final GlobalProps props;
-    private String firstName;
-    private String lastName;
 
     @Autowired
-    public AcquaintanceServiceImpl(ConsolePrintService printService, MessageSource messageSource, GlobalProps props) {
+    public AcquaintanceServiceImpl(PrintService printService, MessageSource messageSource, GlobalProps props) {
         this.printService = printService;
         this.messageSource = messageSource;
         this.props = props;
     }
 
     @Override
-    public void run() {
-        try {
-            printService.print(messageSource.getMessage("acquaintance.get.first.name", null, props.getLocale()));
-            firstName = printService.read();
-            printService.print(messageSource.getMessage("acquaintance.get.last.name", null, props.getLocale()));
-            lastName = printService.read();
-            printService.print(messageSource.getMessage("acquaintance.hello.user", new String[]{firstName, lastName}, props.getLocale()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public String getFirstName() {
-        return firstName;
-    }
-
-    @Override
-    public String getLastName() {
-        return lastName;
+    public User makeAcquaintance() {
+        printService.print(messageSource.getMessage("acquaintance.get.first.name", null, props.getLocale()));
+        String firstName = printService.read();
+        printService.print(messageSource.getMessage("acquaintance.get.last.name", null, props.getLocale()));
+        String lastName = printService.read();
+        printService.print(messageSource.getMessage("acquaintance.hello.user", new String[]{firstName, lastName}, props.getLocale()));
+        return new User(firstName, lastName);
     }
 }

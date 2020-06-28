@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import ru.otus.hw03.configs.GlobalProps;
 import ru.otus.hw03.dao.exception.WelcomeMessageLoadingException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 @Repository
 public class WelcomeDaoFileImpl implements WelcomeDao {

@@ -3,15 +3,13 @@ package ru.otus.hw03.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.hw03.domain.Answer;
-import ru.otus.hw03.domain.QAType;
-import ru.otus.hw03.domain.Question;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @DisplayName("Класс QuestionTest")
 class QuestionTest {

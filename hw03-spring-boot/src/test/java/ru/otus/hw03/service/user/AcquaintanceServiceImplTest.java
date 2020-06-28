@@ -5,9 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.MessageSource;
 import ru.otus.hw03.configs.GlobalProps;
-import ru.otus.hw03.service.console.ConsolePrintService;
-import ru.otus.hw03.service.user.AcquaintanceService;
-import ru.otus.hw03.service.user.AcquaintanceServiceImpl;
+import ru.otus.hw03.domain.User;
+import ru.otus.hw03.service.console.PrintService;
 
 import java.io.IOException;
 
@@ -18,14 +17,14 @@ import static org.mockito.Mockito.mock;
 
 @DisplayName("Сервис AcquaintanceServiceImplTest")
 class AcquaintanceServiceImplTest {
-    ConsolePrintService printService;
+    PrintService printService;
     MessageSource messageSource;
     GlobalProps globalProps;
     AcquaintanceService acquaintanceService;
 
     @BeforeEach
     void setUp() {
-        printService = mock(ConsolePrintService.class);
+        printService = mock(PrintService.class);
         messageSource = mock(MessageSource.class);
         globalProps = mock(GlobalProps.class);
         acquaintanceService = new AcquaintanceServiceImpl(printService, messageSource, globalProps);
@@ -38,9 +37,9 @@ class AcquaintanceServiceImplTest {
         String lastName = "Ivanov";
         given(printService.read()).willReturn(firstName).willReturn(lastName);
 
-        acquaintanceService.run();
+        User user = acquaintanceService.makeAcquaintance();
 
-        assertEquals(firstName, acquaintanceService.getFirstName());
-        assertEquals(lastName, acquaintanceService.getLastName());
+        assertEquals(firstName, user.getFirstName());
+        assertEquals(lastName, user.getLastName());
     }
 }
