@@ -4,7 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,7 +17,7 @@ class ConsolePrintServiceImplTest {
     private static final String TEXT_TO_PRINT2 = "Hello, World!" + System.lineSeparator() + "New line";
     private static final String TEXT_TO_READ = "User text";
     private ByteArrayOutputStream bos;
-    private ConsolePrintService printService;
+    private ConsolePrintServiceImpl printService;
 
     @BeforeEach
     void setUp() {
@@ -40,7 +43,7 @@ class ConsolePrintServiceImplTest {
     @DisplayName("Может прочитать пользовательский ввод")
     void testRead() throws IOException {
         var bis = new ByteArrayInputStream(TEXT_TO_READ.getBytes());
-        printService.setIn(bis);
+        printService = new ConsolePrintServiceImpl(new PrintStream(bos), bis);
         assertEquals(TEXT_TO_READ, printService.read());
     }
 }
