@@ -13,14 +13,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Класс Testing")
-class TestingTest {
+class TestingImplTest {
 
     List<Answer> answers = new ArrayList<>();
     List<Question> questions = new ArrayList<>();
     Question correctQuestion;
     Question incorrectQuestion;
 
-    Testing testing;
+    TestingImpl testing;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +39,7 @@ class TestingTest {
         when(incorrectQuestion.checkAnswers(answers)).thenReturn(false);
         questions.add(incorrectQuestion);
 
-        testing = new Testing(questions);
+        testing = new TestingImpl(questions);
     }
 
     @Test

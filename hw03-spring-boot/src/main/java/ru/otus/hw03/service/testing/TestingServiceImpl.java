@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.hw03.configs.GlobalProps;
-import ru.otus.hw03.domain.Answer;
-import ru.otus.hw03.domain.Question;
-import ru.otus.hw03.domain.Testing;
-import ru.otus.hw03.domain.TestingResult;
+import ru.otus.hw03.domain.*;
 import ru.otus.hw03.service.console.PrintService;
 
 import java.util.ArrayList;
@@ -35,7 +32,7 @@ public class TestingServiceImpl implements TestingService {
 
     @Override
     public void start() {
-        Testing testing = new Testing(questionService.getAll());
+        Testing testing = new TestingImpl(questionService.getAll());
         Optional<Question> questionObj = testing.getNextQuestion();
         while (questionObj.isPresent()) {
             Question question = questionObj.get();
