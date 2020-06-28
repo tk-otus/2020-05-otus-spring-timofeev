@@ -1,6 +1,6 @@
 package ru.otus.hw02.service.testing;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.hw02.dao.AnswerDao;
@@ -17,11 +17,11 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("Сервис AnswerServiceImplTest")
 class AnswerServiceImplTest {
-    private static AnswerService answerService;
-    private static Answer correctAnswer;
+    private AnswerService answerService;
+    private Answer correctAnswer;
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         correctAnswer = mock(Answer.class);
         AnswerDao dao = mock(AnswerDaoCsvImpl.class);
         when(dao.getById(1)).thenReturn(Optional.ofNullable(correctAnswer));
@@ -50,7 +50,7 @@ class AnswerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Может получить все отвеы из dao")
+    @DisplayName("Может получить все ответы из dao")
     void testGetAll() {
         List<Answer> answers = answerService.getAll();
 
