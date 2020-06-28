@@ -27,14 +27,14 @@ class ConsolePrintServiceImplTest {
 
     @Test
     @DisplayName("Может печатать одну строку")
-    void testPrint1() throws InterruptedException {
+    void testPrintOneLine() throws InterruptedException {
         printService.print(TEXT_TO_PRINT1);
         assertEquals(TEXT_TO_PRINT1 + System.lineSeparator(), bos.toString());
     }
 
     @Test
     @DisplayName("Может печатать две строки")
-    void testPrint2() throws InterruptedException {
+    void testPringMultipleLines() throws InterruptedException {
         printService.print(TEXT_TO_PRINT2);
         assertEquals(TEXT_TO_PRINT2 + System.lineSeparator(), bos.toString());
     }

@@ -13,14 +13,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Класс Testing")
-class TestingTest {
+class TestingImplTest {
 
-    List<Answer> answers = new ArrayList<>();
-    List<Question> questions = new ArrayList<>();
-    Question correctQuestion;
-    Question incorrectQuestion;
+    private final List<Answer> answers = new ArrayList<>();
+    private final List<Question> questions = new ArrayList<>();
 
-    Testing testing;
+    private TestingImpl testing;
 
     @BeforeEach
     void setUp() {
@@ -29,17 +27,17 @@ class TestingTest {
         answers.add(answer1);
         answers.add(answer2);
 
-        correctQuestion = mock(Question.class);
+        Question correctQuestion = mock(Question.class);
         when(correctQuestion.getAnswers()).thenReturn(answers);
         when(correctQuestion.checkAnswers(answers)).thenReturn(true);
         questions.add(correctQuestion);
 
-        incorrectQuestion = mock(Question.class);
+        Question incorrectQuestion = mock(Question.class);
         when(incorrectQuestion.getAnswers()).thenReturn(answers);
         when(incorrectQuestion.checkAnswers(answers)).thenReturn(false);
         questions.add(incorrectQuestion);
 
-        testing = new Testing(questions);
+        testing = new TestingImpl(questions);
     }
 
     @Test

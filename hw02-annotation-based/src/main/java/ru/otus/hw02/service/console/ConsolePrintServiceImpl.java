@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 @Service
 public class ConsolePrintServiceImpl implements PrintService {
-    private PrintStream out;
-    private Scanner sc;
+    private final PrintStream out;
+    private final Scanner sc;
 
     @Autowired
     ConsolePrintServiceImpl(@Value("#{ T(java.lang.System).out}") PrintStream out,

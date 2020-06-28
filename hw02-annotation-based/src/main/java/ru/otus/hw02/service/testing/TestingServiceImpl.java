@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.hw02.domain.Answer;
-import ru.otus.hw02.domain.Question;
-import ru.otus.hw02.domain.Testing;
-import ru.otus.hw02.domain.TestingResult;
+import ru.otus.hw02.domain.*;
 import ru.otus.hw02.service.console.PrintService;
 
 import java.util.ArrayList;
@@ -29,7 +26,7 @@ public class TestingServiceImpl implements TestingService {
 
     @Override
     public void start() {
-        Testing testing = new Testing(questionService.getAll());
+        Testing testing = new TestingImpl(questionService.getAll());
         Optional<Question> questionObj = testing.getNextQuestion();
         while (questionObj.isPresent()) {
             Question question = questionObj.get();
