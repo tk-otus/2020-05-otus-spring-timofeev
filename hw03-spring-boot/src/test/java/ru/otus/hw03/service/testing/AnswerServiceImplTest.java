@@ -1,60 +1,43 @@
 package ru.otus.hw03.service.testing;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw03.dao.AnswerDao;
-import ru.otus.hw03.dao.AnswerDaoCsvImpl;
-import ru.otus.hw03.domain.Answer;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("Сервис AnswerServiceImplTest")
+@SpringBootTest(classes = AnswerServiceImpl.class)
 class AnswerServiceImplTest {
-    private static AnswerService answerService;
-    private static Answer correctAnswer;
 
-    @BeforeAll
-    static void setUp() {
-        correctAnswer = mock(Answer.class);
-        AnswerDao dao = mock(AnswerDaoCsvImpl.class);
-        when(dao.getById(1)).thenReturn(Optional.ofNullable(correctAnswer));
-        when(dao.getByQuestionId(1)).thenReturn(Collections.singletonList(correctAnswer));
-        when(dao.getAll()).thenReturn(Collections.singletonList(correctAnswer));
+    @MockBean
+    private AnswerDao dao;
 
-        answerService = new AnswerServiceImpl(dao);
-    }
+    @Autowired
+    private AnswerService answerService;
 
     @Test
-    @DisplayName("Может получить ответ из dao по Id")
+    @DisplayName("Должен вызывать метод dao.getById()")
     void testGetById() {
-        Optional<Answer> answer = answerService.getById(1);
-
-        assertTrue(answer.isPresent());
-        assertEquals(correctAnswer, answer.get());
+        answerService.getById(1);
+        verify(dao, times(1)).getById(1);
     }
 
     @Test
-    @DisplayName("Может получить ответ из dao по Id вопроса")
+    @DisplayName("Должен вызывать метод dao.getByQuestionId()")
     void testGetByQuestionId() {
-        List<Answer> answers = answerService.getByQuestionId(1);
-
-        assertNotNull(answers);
-        assertEquals(correctAnswer, answers.get(0));
+        answerService.getByQuestionId(1);
+        verify(dao, times(1)).getByQuestionId(1);
     }
 
     @Test
-    @DisplayName("Может получить все отвеы из dao")
+    @DisplayName("Должен вызывать метод dao.getByQuestionId()")
     void testGetAll() {
-        List<Answer> answers = answerService.getAll();
-
-        assertNotNull(answers);
-        assertEquals(correctAnswer, answers.get(0));
+        answerService.getAll();
+        verify(dao, times(1)).getAll();
     }
 }
