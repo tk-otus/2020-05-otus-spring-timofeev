@@ -1,30 +1,29 @@
 package ru.otus.hw03.service.user;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw03.dao.WelcomeDao;
-import ru.otus.hw03.dao.WelcomeDaoFileImpl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@DisplayName("Сервис WelcomeServiceImplTest")
+@DisplayName("Сервис WelcomeServiceImpl")
+@SpringBootTest(classes = WelcomeServiceImpl.class)
 class WelcomeServiceImplTest {
-    private static final String WELCOME_LOGO = "WELCOME LOGO";
-    private static WelcomeService welcomeService;
 
-    @BeforeAll
-    static void setUp() {
-        WelcomeDao dao = mock(WelcomeDaoFileImpl.class);
-        when(dao.getWelcomeMessage()).thenReturn(WELCOME_LOGO);
-        welcomeService = new WelcomeServiceImpl(dao);
-    }
+    @MockBean
+    private WelcomeDao dao;
+
+    @Autowired
+    private WelcomeService welcomeService;
 
     @Test
-    @DisplayName("Может вернуть лого из файла")
+    @DisplayName("Вызывает метод dao.getWelcomeMessage()")
     void testGetWelcomeMessage() {
-        assertEquals(WELCOME_LOGO, welcomeService.getWelcomeMessage());
+        welcomeService.getWelcomeMessage();
+        verify(dao, times(1)).getWelcomeMessage();
     }
 }
