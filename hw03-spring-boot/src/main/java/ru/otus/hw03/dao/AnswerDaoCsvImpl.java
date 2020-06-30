@@ -60,9 +60,7 @@ public class AnswerDaoCsvImpl implements AnswerDao {
                 int questionId = Integer.parseInt(value[1]);
                 String answerText = value[2];
                 boolean isCorrect = Boolean.parseBoolean(value[3]);
-                Locale locale = LocaleUtils.toLocale(value[4]);
-                if (locale.equals(props.getLocale()))
-                    result.add(new Answer(id, questionId, answerText, isCorrect));
+                result.add(new Answer(id, questionId, answerText, isCorrect));
             }
         } catch (FileNotFoundException e) {
             throw new AnswerLoadingException("Answers file (" + file.getFilename() + ") not found", e);

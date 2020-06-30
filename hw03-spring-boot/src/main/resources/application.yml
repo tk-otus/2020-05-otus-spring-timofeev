@@ -1,5 +1,5 @@
 global:
-  locale: ru
-  answers-csvfile: answers.csv
-  questions-csvfile: questions.csv
+  locale: en
+  answers-csvfile: answers_${global.locale}.csv
+  questions-csvfile: questions_${global.locale}.csv
   welcome-message-file: welcomeMessage.txt

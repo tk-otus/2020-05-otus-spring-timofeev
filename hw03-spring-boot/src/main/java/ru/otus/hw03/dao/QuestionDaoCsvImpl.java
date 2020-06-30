@@ -55,9 +55,7 @@ public class QuestionDaoCsvImpl implements QuestionDao {
                 int id = Integer.parseInt(value[0]);
                 QAType type = QAType.valueOf(value[1]);
                 String questionText = value[2];
-                String locale = value[3];
-                if (locale.equals(props.getLocale().toString()))
-                    result.add(new Question(id, type, questionText));
+                result.add(new Question(id, type, questionText));
             }
         } catch (FileNotFoundException e) {
             throw new QuestionLoadingException("Questions file (" + file.getFilename() + ") not found", e);
