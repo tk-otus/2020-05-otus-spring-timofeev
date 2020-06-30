@@ -26,12 +26,14 @@ public class QuestionDaoCsvImpl implements QuestionDao {
 
     private final AnswerDao dao;
     private final SimpleCsvReader reader;
+    private final GlobalProps props;
     private final List<Question> questions;
 
     @Autowired
     public QuestionDaoCsvImpl(AnswerDao dao, SimpleCsvReader reader, GlobalProps props, ResourceLoader loader) throws QuestionLoadingException {
         this.dao = dao;
         this.reader = reader;
+        this.props = props;
         questions = readQuestionFromFile(loader.getResource("classpath:" + props.getQuestionsCsvfile()));
     }
 
@@ -53,7 +55,9 @@ public class QuestionDaoCsvImpl implements QuestionDao {
                 int id = Integer.parseInt(value[0]);
                 QAType type = QAType.valueOf(value[1]);
                 String questionText = value[2];
-                result.add(new Question(id, type, questionText));
+                String locale = value[3];
+                if (locale.equals(props.getLocale().toString()))
+                    result.add(new Question(id, type, questionText));
             }
         } catch (FileNotFoundException e) {
             throw new QuestionLoadingException("Questions file (" + file.getFilename() + ") not found", e);

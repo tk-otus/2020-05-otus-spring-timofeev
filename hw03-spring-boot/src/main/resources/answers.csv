@@ -11,15 +11,15 @@ id,questionId,answer,isCorrect,locale
 10,4,No,false,en
 11,5,I'm very sad!,false,en
 12,5,I'm very happy!,true,en
-13,6,Правильный ответ,true,ru_RU
-14,6,Неправильный ответ,false,ru_RU
-15,7,Да!,true,ru_RU
-16,7,Да, конечно!,true,ru_RU
-17,7,Нет...,false,ru_RU
-18,8,Очень круто!,true,ru_RU
-19,8,Совсем плохо...,false,ru_RU
-20,9,О да!,true,ru_RU
-21,9,Конечно,true,ru_RU
-22,9,Нет,false,ru_RU
-23,10,Я очень расстроен!,false,ru_RU
-24,10,Я очень доволен!,true,ru_RU
+13,6,Правильный ответ,true,ru
+14,6,Неправильный ответ,false,ru
+15,7,Да!,true,ru
+16,7,Да\, конечно!,true,ru
+17,7,Нет...,false,ru
+18,8,Очень круто!,true,ru
+19,8,Совсем плохо...,false,ru
+20,9,О да!,true,ru
+21,9,Конечно,true,ru
+22,9,Нет,false,ru
+23,10,Я очень расстроен!,false,ru
+24,10,Я очень доволен!,true,ru

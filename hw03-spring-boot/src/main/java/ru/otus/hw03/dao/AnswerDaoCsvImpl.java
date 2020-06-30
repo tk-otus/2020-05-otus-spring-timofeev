@@ -1,6 +1,7 @@
 package ru.otus.hw03.dao;
 
 import com.opencsv.exceptions.CsvValidationException;
+import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,11 +26,13 @@ public class AnswerDaoCsvImpl implements AnswerDao {
     private static final Logger logger = LoggerFactory.getLogger(AnswerDaoCsvImpl.class);
 
     private final SimpleCsvReader reader;
+    private final GlobalProps props;
     private final List<Answer> answers;
 
     @Autowired
     public AnswerDaoCsvImpl(SimpleCsvReader reader, GlobalProps props, ResourceLoader loader) throws AnswerLoadingException {
         this.reader = reader;
+        this.props = props;
         answers = readAnswersFromFile(loader.getResource("classpath:" + props.getAnswersCsvfile()));
     }
 
@@ -56,7 +60,9 @@ public class AnswerDaoCsvImpl implements AnswerDao {
                 int questionId = Integer.parseInt(value[1]);
                 String answerText = value[2];
                 boolean isCorrect = Boolean.parseBoolean(value[3]);
-                result.add(new Answer(id, questionId, answerText, isCorrect));
+                Locale locale = LocaleUtils.toLocale(value[4]);
+                if (locale.equals(props.getLocale()))
+                    result.add(new Answer(id, questionId, answerText, isCorrect));
             }
         } catch (FileNotFoundException e) {
             throw new AnswerLoadingException("Answers file (" + file.getFilename() + ") not found", e);
