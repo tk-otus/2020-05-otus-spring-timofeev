@@ -16,7 +16,7 @@
     </modules>
 
     <properties>
-        <springframework.version>5.2.6.RELEASE</springframework.version>
+        <springframework.version>5.2.22.RELEASE</springframework.version>
         <logback.version>1.2.3</logback.version>
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <mockito.version>3.3.3</mockito.version>
